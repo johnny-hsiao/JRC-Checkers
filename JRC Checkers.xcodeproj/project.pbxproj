@@ -1,0 +1,420 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DA1CC1271A8D958600B449AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1CC1261A8D958600B449AA /* AppDelegate.swift */; };
+		DA1CC1291A8D958600B449AA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1CC1281A8D958600B449AA /* ViewController.swift */; };
+		DA1CC12C1A8D958600B449AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA1CC12A1A8D958600B449AA /* Main.storyboard */; };
+		DA1CC12E1A8D958600B449AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA1CC12D1A8D958600B449AA /* Images.xcassets */; };
+		DA1CC1311A8D958600B449AA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA1CC12F1A8D958600B449AA /* LaunchScreen.xib */; };
+		DA1CC13D1A8D958600B449AA /* JRC_CheckersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1CC13C1A8D958600B449AA /* JRC_CheckersTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DA1CC1371A8D958600B449AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA1CC1191A8D958600B449AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA1CC1201A8D958600B449AA;
+			remoteInfo = "JRC Checkers";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DA1CC1211A8D958600B449AA /* JRC Checkers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JRC Checkers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1CC1251A8D958600B449AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA1CC1261A8D958600B449AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DA1CC1281A8D958600B449AA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DA1CC12B1A8D958600B449AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DA1CC12D1A8D958600B449AA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		DA1CC1301A8D958600B449AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		DA1CC1361A8D958600B449AA /* JRC CheckersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "JRC CheckersTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1CC13B1A8D958600B449AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA1CC13C1A8D958600B449AA /* JRC_CheckersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JRC_CheckersTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DA1CC11E1A8D958600B449AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA1CC1331A8D958600B449AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DA1CC1181A8D958600B449AA = {
+			isa = PBXGroup;
+			children = (
+				DA1CC1231A8D958600B449AA /* JRC Checkers */,
+				DA1CC1391A8D958600B449AA /* JRC CheckersTests */,
+				DA1CC1221A8D958600B449AA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DA1CC1221A8D958600B449AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA1CC1211A8D958600B449AA /* JRC Checkers.app */,
+				DA1CC1361A8D958600B449AA /* JRC CheckersTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DA1CC1231A8D958600B449AA /* JRC Checkers */ = {
+			isa = PBXGroup;
+			children = (
+				DA1CC1261A8D958600B449AA /* AppDelegate.swift */,
+				DA1CC1281A8D958600B449AA /* ViewController.swift */,
+				DA1CC12A1A8D958600B449AA /* Main.storyboard */,
+				DA1CC12D1A8D958600B449AA /* Images.xcassets */,
+				DA1CC12F1A8D958600B449AA /* LaunchScreen.xib */,
+				DA1CC1241A8D958600B449AA /* Supporting Files */,
+			);
+			path = "JRC Checkers";
+			sourceTree = "<group>";
+		};
+		DA1CC1241A8D958600B449AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DA1CC1251A8D958600B449AA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DA1CC1391A8D958600B449AA /* JRC CheckersTests */ = {
+			isa = PBXGroup;
+			children = (
+				DA1CC13C1A8D958600B449AA /* JRC_CheckersTests.swift */,
+				DA1CC13A1A8D958600B449AA /* Supporting Files */,
+			);
+			path = "JRC CheckersTests";
+			sourceTree = "<group>";
+		};
+		DA1CC13A1A8D958600B449AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DA1CC13B1A8D958600B449AA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DA1CC1201A8D958600B449AA /* JRC Checkers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA1CC1401A8D958600B449AA /* Build configuration list for PBXNativeTarget "JRC Checkers" */;
+			buildPhases = (
+				DA1CC11D1A8D958600B449AA /* Sources */,
+				DA1CC11E1A8D958600B449AA /* Frameworks */,
+				DA1CC11F1A8D958600B449AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "JRC Checkers";
+			productName = "JRC Checkers";
+			productReference = DA1CC1211A8D958600B449AA /* JRC Checkers.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA1CC1351A8D958600B449AA /* JRC CheckersTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA1CC1431A8D958600B449AA /* Build configuration list for PBXNativeTarget "JRC CheckersTests" */;
+			buildPhases = (
+				DA1CC1321A8D958600B449AA /* Sources */,
+				DA1CC1331A8D958600B449AA /* Frameworks */,
+				DA1CC1341A8D958600B449AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA1CC1381A8D958600B449AA /* PBXTargetDependency */,
+			);
+			name = "JRC CheckersTests";
+			productName = "JRC CheckersTests";
+			productReference = DA1CC1361A8D958600B449AA /* JRC CheckersTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DA1CC1191A8D958600B449AA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Jollyrancher Corp";
+				TargetAttributes = {
+					DA1CC1201A8D958600B449AA = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					DA1CC1351A8D958600B449AA = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = DA1CC1201A8D958600B449AA;
+					};
+				};
+			};
+			buildConfigurationList = DA1CC11C1A8D958600B449AA /* Build configuration list for PBXProject "JRC Checkers" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DA1CC1181A8D958600B449AA;
+			productRefGroup = DA1CC1221A8D958600B449AA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DA1CC1201A8D958600B449AA /* JRC Checkers */,
+				DA1CC1351A8D958600B449AA /* JRC CheckersTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DA1CC11F1A8D958600B449AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA1CC12C1A8D958600B449AA /* Main.storyboard in Resources */,
+				DA1CC1311A8D958600B449AA /* LaunchScreen.xib in Resources */,
+				DA1CC12E1A8D958600B449AA /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA1CC1341A8D958600B449AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DA1CC11D1A8D958600B449AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA1CC1291A8D958600B449AA /* ViewController.swift in Sources */,
+				DA1CC1271A8D958600B449AA /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA1CC1321A8D958600B449AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA1CC13D1A8D958600B449AA /* JRC_CheckersTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DA1CC1381A8D958600B449AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA1CC1201A8D958600B449AA /* JRC Checkers */;
+			targetProxy = DA1CC1371A8D958600B449AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DA1CC12A1A8D958600B449AA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA1CC12B1A8D958600B449AA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		DA1CC12F1A8D958600B449AA /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA1CC1301A8D958600B449AA /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DA1CC13E1A8D958600B449AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DA1CC13F1A8D958600B449AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DA1CC1411A8D958600B449AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "JRC Checkers/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DA1CC1421A8D958600B449AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "JRC Checkers/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		DA1CC1441A8D958600B449AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "JRC CheckersTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JRC Checkers.app/JRC Checkers";
+			};
+			name = Debug;
+		};
+		DA1CC1451A8D958600B449AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "JRC CheckersTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JRC Checkers.app/JRC Checkers";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DA1CC11C1A8D958600B449AA /* Build configuration list for PBXProject "JRC Checkers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA1CC13E1A8D958600B449AA /* Debug */,
+				DA1CC13F1A8D958600B449AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA1CC1401A8D958600B449AA /* Build configuration list for PBXNativeTarget "JRC Checkers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA1CC1411A8D958600B449AA /* Debug */,
+				DA1CC1421A8D958600B449AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DA1CC1431A8D958600B449AA /* Build configuration list for PBXNativeTarget "JRC CheckersTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA1CC1441A8D958600B449AA /* Debug */,
+				DA1CC1451A8D958600B449AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DA1CC1191A8D958600B449AA /* Project object */;
+}
