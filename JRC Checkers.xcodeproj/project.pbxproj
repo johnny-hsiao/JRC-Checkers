@@ -13,6 +13,8 @@
 		DA1CC12E1A8D958600B449AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA1CC12D1A8D958600B449AA /* Images.xcassets */; };
 		DA1CC1311A8D958600B449AA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA1CC12F1A8D958600B449AA /* LaunchScreen.xib */; };
 		DA1CC13D1A8D958600B449AA /* JRC_CheckersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1CC13C1A8D958600B449AA /* JRC_CheckersTests.swift */; };
+		DA1CC1471A8D976B00B449AA /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1CC1461A8D976B00B449AA /* BoardView.swift */; };
+		DAE6F6C51AA4172800ABEB64 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = DAE6F6C41AA4172800ABEB64 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		DA1CC1361A8D958600B449AA /* JRC CheckersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "JRC CheckersTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1CC13B1A8D958600B449AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA1CC13C1A8D958600B449AA /* JRC_CheckersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JRC_CheckersTests.swift; sourceTree = "<group>"; };
+		DA1CC1461A8D976B00B449AA /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		DAE6F6C41AA4172800ABEB64 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,8 @@
 			children = (
 				DA1CC1261A8D958600B449AA /* AppDelegate.swift */,
 				DA1CC1281A8D958600B449AA /* ViewController.swift */,
+				DA1CC1461A8D976B00B449AA /* BoardView.swift */,
+				DAE6F6C41AA4172800ABEB64 /* .gitignore */,
 				DA1CC12A1A8D958600B449AA /* Main.storyboard */,
 				DA1CC12D1A8D958600B449AA /* Images.xcassets */,
 				DA1CC12F1A8D958600B449AA /* LaunchScreen.xib */,
@@ -192,6 +198,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAE6F6C51AA4172800ABEB64 /* .gitignore in Resources */,
 				DA1CC12C1A8D958600B449AA /* Main.storyboard in Resources */,
 				DA1CC1311A8D958600B449AA /* LaunchScreen.xib in Resources */,
 				DA1CC12E1A8D958600B449AA /* Images.xcassets in Resources */,
@@ -212,6 +219,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA1CC1471A8D976B00B449AA /* BoardView.swift in Sources */,
 				DA1CC1291A8D958600B449AA /* ViewController.swift in Sources */,
 				DA1CC1271A8D958600B449AA /* AppDelegate.swift in Sources */,
 			);
@@ -405,6 +413,7 @@
 				DA1CC1421A8D958600B449AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DA1CC1431A8D958600B449AA /* Build configuration list for PBXNativeTarget "JRC CheckersTests" */ = {
 			isa = XCConfigurationList;
@@ -413,6 +422,7 @@
 				DA1CC1451A8D958600B449AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

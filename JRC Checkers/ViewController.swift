@@ -10,6 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet var board: BoardView!
+    
+    @IBOutlet var resetButton: UIButton!
+    
+    @IBAction func resetButtonClicked(sender: UIButton) {
+        board.resetGame()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
