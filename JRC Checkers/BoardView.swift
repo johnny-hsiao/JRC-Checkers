@@ -67,7 +67,7 @@ class BoardView: UIView {
         PlayerColor.redKing: [Move(y: 1, x: -1), Move(y: 1, x: 1), Move(y: -1, x: -1), Move(y: -1, x: 1)]
     ]
     
-    let validJumps = [
+    let validJ = [
         PlayerColor.black: [Move(y: 2, x: -2), Move( y: 2, x: 2)],
         PlayerColor.red: [Move(y: -2, x: -2), Move(y: -2, x: 2)],
         PlayerColor.blackKing: [Move(y: 2, x: -2), Move( y: 2, x: 2), Move(y: -2, x: -2), Move(y: -2, x: 2)],
@@ -133,7 +133,7 @@ class BoardView: UIView {
         }
     }
     
-
+/*
     func moveIsValid(spot: Position) -> Bool {
         var isValid = false
         let y_diff = spot.y - self.pieceSelected!.y
@@ -181,23 +181,99 @@ class BoardView: UIView {
         println("Possible moves: \(validMoves)")
         return validMoves
     }
+    */
+    func moveIsValid(spot: Position) -> Bool {
+        var isValid = false
+        let y_diff = spot.y - self.pieceSelected!.y
+        let x_diff = spot.x - self.pieceSelected!.x
+        let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
+        let spot1 = gameBoard[pieceSelected!.y + y_diff/2][pieceSelected!.x + x_diff/2]
+        let spot2 = gameBoard[spot.y][spot.x]
+        
+        if y_diff == oneDown && (x_diff == oneLeft || x_diff == oneRight) && piece1 == PlayerColor.black && spot2 == PlayerColor.none {
+            isValid = true
+        }
+        if y_diff == oneUp && (x_diff == oneLeft || x_diff == oneRight) && piece1 == PlayerColor.red && spot2 == PlayerColor.none {
+            isValid = true
+        }
+        if (y_diff == oneUp || y_diff == oneDown) && (x_diff == oneLeft || x_diff == oneRight) && (piece1 == PlayerColor.blackKing || piece1 == PlayerColor.redKing) && spot2 == PlayerColor.none {
+            isValid = true
+        }
+        
+        return isValid
+    }
     
+    func movesAllowed(piece: Position) -> [Position] {
+        var validMoves: [Position] = []
+        // Chris changed his mind. Use validMoves
+        for x in 0...7 {
+            for y in 0...7 {
+                if moveIsValid(Position(y: y, x: x)) {
+                    validMoves.append(Position(y: y, x: x))
+                }
+            }
+        }
+        println("Possible moves: \(validMoves)")
+        return validMoves
+    }
+    
+    func jumpIsValid(spot: Position) -> Bool {
+        var isValid = false
+        let y_diff = spot.y - self.pieceSelected!.y
+        let x_diff = spot.x - self.pieceSelected!.x
+        let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
+        let spot1 = gameBoard[pieceSelected!.y + y_diff/2][pieceSelected!.x + x_diff/2]
+        let spot2 = gameBoard[spot.y][spot.x]
+        
+        let blackCond: Bool = piece1 == PlayerColor.black && y_diff == twoDown && (spot1 == PlayerColor.red || spot1 == PlayerColor.redKing) && spot.y < 8
+        let redCond: Bool = piece1 == PlayerColor.red && y_diff == twoUp && (spot1 == PlayerColor.black || spot1 == PlayerColor.blackKing) && spot.y >= 0
+        let blackKingCond: Bool = piece1 == PlayerColor.blackKing && (y_diff == twoDown || y_diff == twoUp) && (spot1 == PlayerColor.red || spot1 == PlayerColor.redKing) && spot.y < 8 && spot.y >= 0
+        let redKingCond: Bool = piece1 == PlayerColor.redKing && (y_diff == twoDown || y_diff == twoUp) && (spot1 == PlayerColor.black || spot1 == PlayerColor.blackKing) && spot.y < 8 && spot.y >= 0
+        
+        if blackCond || redCond || blackKingCond || redKingCond {
+            if (x_diff == twoLeft && spot.x >= 0) || (x_diff == twoRight && spot.x < 8) {
+                if spot2 == PlayerColor.none {
+                    isValid = true
+                }
+            }
+        }
+        
+        return isValid
+    }
+    
+    func jumpsAllowed(piece: Position) -> [Position] {
+        var validJumps: [Position] = []
+        // Chris changed his mind. Use validMoves
+        for x in 0...7 {
+            for y in 0...7 {
+                if jumpIsValid(Position(y: y, x: x)) {
+                    validJumps.append(Position(y: y, x: x))
+                }
+            }
+        }
+        println("Possible moves: \(validJumps)")
+        return validJumps
+    }
+
+ 
     func validJump(spot: Position, color: PlayerColor, color2: PlayerColor) -> Bool {
-        if spot.y == 2 && spot.x == 3 {
+        if spot.y == 0 && spot.x == 5 {
             println("chris smells")
         }
         var isValid = false
         let piece1 = gameBoard[spot.y][spot.x]
         
         if piece1 == color || piece1 == color2 {
-        for jump in validJumps[piece1]! {
+        for jump in validJ[piece1]! {
         
             let blackCond: Bool = piece1 == PlayerColor.black && jump.y == twoDown  && spot.y < 6
             let redCond: Bool = piece1 == PlayerColor.red && jump.y == twoUp && spot.y > 1
-            let blackKingCond: Bool = piece1 == PlayerColor.blackKing && (jump.y == twoDown || jump.y == twoUp) && spot.y < 6 && spot.y > 1
-            let redKingCond: Bool = piece1 == PlayerColor.redKing && (jump.y == twoDown || jump.y == twoUp) && spot.y < 6 && spot.y > 1
+            let blackKingCond1: Bool = piece1 == PlayerColor.blackKing && jump.y == twoDown && spot.y < 6
+            let blackKingCond2: Bool = piece1 == PlayerColor.blackKing && jump.y == twoUp && spot.y > 1
+            let redKingCond1: Bool = piece1 == PlayerColor.redKing && jump.y == twoDown && spot.y < 6
+            let redKingCond2: Bool = piece1 == PlayerColor.redKing && jump.y == twoUp && spot.y > 1
         
-            if blackCond || redCond || blackKingCond || redKingCond {
+            if blackCond || redCond || blackKingCond1 || redKingCond1 || blackKingCond2 || redKingCond2 {
                 if (jump.x == twoLeft && spot.x > 1) || (jump.x == twoRight && spot.x < 6) {
                     let spot1 = gameBoard[spot.y + jump.y/2][spot.x + jump.x/2]
                     let spot2 = gameBoard[spot.y + jump.y][spot.x + jump.x]
@@ -228,17 +304,18 @@ class BoardView: UIView {
         
         for (var y = 0; y < 8; y++) {
             for (var x = 0; x < 8; x++) {
-                for color in PlayerColor.allValues {
+   //             for color in PlayerColor.allValues {
    //                 let pieceToCheck = gameBoard[y][x]
                     let piecePosition = Position(y: y, x: x)
                     if validJump(piecePosition, color: piece1, color2: piece2) {
                         jump = true
                     }
-                }
+    //            }
             }
         }
         return jump
     }
+
     
     func kingMe() {
         //King at the last row
@@ -279,12 +356,13 @@ class BoardView: UIView {
         
             if piece1 != PlayerColor.none {
                 let validMoves = movesAllowed(pieceSelected!)
+                let validJumps = jumpsAllowed(pieceSelected!)
                 var noForceJump: Bool = true
                 let capture_y = pieceSelected!.y + (moveTo!.y - pieceSelected!.y)/2
                 let capture_x = pieceSelected!.x + (moveTo!.x - pieceSelected!.x)/2
                 
-                if thereIsAJump(currentPlayer) {
-                    for move in validJumps[piece1]! {
+                if validJumps.count > 0 {
+                    for move in validJ[piece1]! {
                         println("there is a jump")
                         
                         if moveTo!.y == (pieceSelected!.y + move.y) && moveTo!.x == (pieceSelected!.x + move.x) && gameBoard[pieceSelected!.y + move.y/2][pieceSelected!.x + move.x/2] != PlayerColor.none {
@@ -357,25 +435,26 @@ class BoardView: UIView {
         
         if piece != PlayerColor.none {
             let validMoves = movesAllowed(pieceSelected!)
+            let validJumps = jumpsAllowed(pieceSelected!)
             var noForceJump: Bool = true
             
-            if thereIsAJump(currentPlayer) {
+            if validJumps.count > 0 {
                 
-                for jumpMove in validJumps[piece]! {
+                for jumpMove in validJ[piece]! {
     //            println(jumpMove)
                     var moveByY = pieceSelected!.y + jumpMove.y
                     var moveByX = pieceSelected!.x + jumpMove.x
-                    for move in validMoves {
-     //               println(move)
+                    for jump in validJumps {
+     //                 println(move)
                 
-                    if moveByY == move.y && moveByX == move.x {
-     //                   println("image call")
-                        noForceJump = false
-                        possibleMoveImages(pieceSelected!, offset: jumpMove)
+                        if moveByY == jump.y && moveByX == jump.x {
+     //                     println("image call")
+                            noForceJump = false
+                            possibleMoveImages(pieceSelected!, offset: jumpMove)
+                        }
                     }
                 }
-            }
-            }else {
+            } else {
                 for regMove in validM[piece]! {
        //             println(regMove)
                     var moveByY = pieceSelected!.y + regMove.y
