@@ -1,26 +1,5 @@
 import UIKit
 
-
-struct Position: Printable, Equatable {
-    let y: Int
-    let x: Int
-    var description: String {
-        return "(\(y), \(x))"
-    }
-}
-
-func ==(lhs: Position, rhs: Position) -> Bool {
-    return lhs.x == rhs.x && lhs.y == rhs.y
-}
-
-struct Move: Printable {
-    let y: Int
-    let x: Int
-    var description: String {
-        return "(\(y), \(x))"
-    }
-}
-
 class BoardView: UIView {
     
     let pieceWidth: Int = 38
@@ -29,7 +8,7 @@ class BoardView: UIView {
     var seventhRow = 236
 
     var turnOver = false
-    var currentPlayer = Team.black
+    var currentPlayer = Turn.black
     var pieceMoving: PC = PC.none
     var pieceMovingKing: PC = PC.none
     
@@ -56,7 +35,7 @@ class BoardView: UIView {
         }
     }
     
-    enum Team: String {
+    enum Turn: String {
         case red = "red", black = "black"
         var description: String {
             get {
@@ -65,9 +44,21 @@ class BoardView: UIView {
         }
     }
     
+    struct Move: Printable {
+        let y: Int
+        let x: Int
+        var description: String {
+            return "(\(y), \(x))"
+        }
+    }
     
-    
-    
+    struct Position: Printable {
+        let y: Int
+        let x: Int
+        var description: String {
+            return "(\(y), \(x))"
+        }
+    }
     
     let validM = [
         PC.black: [Move(y: 1, x: -1), Move(y: 1, x: 1)],
@@ -135,10 +126,10 @@ class BoardView: UIView {
     }
     
     func turnSwitch() {
-        if currentPlayer == Team.red {
-            currentPlayer = Team.black
+        if currentPlayer == Turn.red {
+            currentPlayer = Turn.black
         } else {
-            currentPlayer = Team.red
+            currentPlayer = Turn.red
         }
     }
     
@@ -291,16 +282,6 @@ class BoardView: UIView {
         
         var xCoord: Int = Int(touchLocation.x / squareWidth)
         var yCoord: Int = Int(touchLocation.y / squareHeight)
-        
-        pieceWasTouched(Position(y: yCoord, x: xCoord))
-        
-        self.setNeedsDisplay()
-    }
-    
-    func pieceWasTouched(pieceTouched: Position) {
-        let xCoord = pieceTouched.x;
-        let yCoord = pieceTouched.y;
-        
         turnOver = false
         println("it is \(currentPlayer.description)'s turn")
         
@@ -308,15 +289,15 @@ class BoardView: UIView {
         if pieceSelected != nil {
             moveTo = Position(y: yCoord, x: xCoord)
             let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
-            
-            if currentPlayer == Team.black {
+        
+            if currentPlayer == Turn.black {
                 pieceMoving = PC.black
                 pieceMovingKing = PC.blackKing
             } else {
                 pieceMoving = PC.red
                 pieceMovingKing = PC.redKing
             }
-            
+        
             if piece1 != PC.none {
                 let validMoves = movesAllowed(pieceSelected!)
                 let validJumps = jumpsAllowed(pieceSelected!)
@@ -327,10 +308,6 @@ class BoardView: UIView {
                     for move in validJ[piece1]! {
                         println("there is a jump")
                         
-                        //moveTo!.y == (pieceSelected!.y + move.y) && moveTo!.x == (pieceSelected!.x + move.x) && gameBoard[pieceSelected!.y + move.y/2][pieceSelected!.x + move.x/2] != PC.none 
-                        
-                        //moveTo == movedPosition(position: pieceSelected!, move: move) && gameBoard[pieceSelected!.y + move.y/2][pieceSelected!.x + move.x/2] != PC.none
-                        
                         if moveTo!.y == (pieceSelected!.y + move.y) && moveTo!.x == (pieceSelected!.x + move.x) && gameBoard[pieceSelected!.y + move.y/2][pieceSelected!.x + move.x/2] != PC.none {
                             movePiece((y1: pieceSelected!.y, x1: pieceSelected!.x), to: (y2: moveTo!.y, x2: moveTo!.x))
                             gameBoard[capture_y][capture_x] = PC.none
@@ -338,7 +315,7 @@ class BoardView: UIView {
                             if validJump(moveTo!, color: pieceMoving, color2: pieceMovingKing) {
                                 pieceSelected = moveTo
                             } else {
-                                turnOver = true
+                            turnOver = true
                             }
                         }
                     }
@@ -362,7 +339,7 @@ class BoardView: UIView {
         }
         
         if  (pieceSelected == nil) {
-            if currentPlayer == Team.black {
+            if currentPlayer == Turn.black {
                 if gameBoard[yCoord][xCoord] == PC.black || gameBoard[yCoord][xCoord] == PC.blackKing {
                     pieceSelected = Position(y: yCoord, x: xCoord)
                     //               movesAllowed(pieceSelected!)
@@ -374,8 +351,9 @@ class BoardView: UIView {
                 }
             }
         }
+        
+        self.setNeedsDisplay()
     }
-
 
 /*
  * Display possible moves
@@ -449,83 +427,11 @@ class BoardView: UIView {
         [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
         ]
         turnOver = false
-        currentPlayer = Team.black
+        currentPlayer = Turn.black
         pieceMoving = PC.none
         pieceMovingKing = PC.none
         pieceSelected = nil
         moveTo = nil
         self.setNeedsDisplay()
     }
-    
-    
-    
-    
-    
-    
-    
-    // If a jump was made yet, so the player is stuck with that piece
-    let moveStartedAlready = false
-    
-    func pieceWasTouched2(pieceTouched: Position) {
-        
-        if moveAlreadyStarted {
-            // You can't unselect if you already jumped
-            tryToMovePiece(to: pieceTouched)
-        } else {
-            
-            // If it's the start of your turn, you can select different pieces
-            
-            if isFriendly(pieceTouched) {
-                // Piece touched is friendly
-                pieceSelected = pieceTouched
-            } else if isEnemy(pieceTouched) {
-                // Piece touched is enemy
-                pieceSelected = nil
-            } else if pieceSelected {
-                // Empty space was touched and we have a piece already selected
-                tryToMovePiece(to: pieceTouched)
-            }
-        }
-    }
-    
-    func tryToMovePiece(to newPosition: Position) {
-        let attemptedMove: Move = moveBetween(from: pieceSelected to: newPosition)
-        
-        let pieceType = PieceType(pieceSelected) // This is just "normal" or "king". No black or red
-        let validMovess: [Move] = validMovesFor(pieceType: pieceType, team: currentPlayer)
-        
-        if contains(validMovess, attemptedMove) {
-            movePiece(from: selectedPiece, to: newPosition)
-            selectedPiece = nil
-            nextTurn()
-        }
-        
-        // Sort of the same for valid jumps, but you need to find out the jumped piece as well
-        // Remember you can just use isEnemy() to find out it's an enemy
-    }
-    
-    func moveBetween(from: Position, to: Position) -> Move {
-        // Find out what move will take you from "from" to "to"
-        return Move(y: to.y - from.y, x: to.x - from.x)
-    }
-    
-    func validMovesFor(pieceType: PieceType, team: Team) {
-        if team == Team.black {
-            return validM2[team]
-        } else {
-            let flippedMoves = []
-            for move in validM2[team] {
-                moves.append(Move(y: -move.y, x: move.x))
-            }
-            
-            return moves
-        }
-    }
-    
-    let validM2 = [
-        PT.normal: [Move(y: 1, x: -1), Move(y: 1, x: 1)],
-        PT.king: [Move(y: 1, x: -1), Move(y: 1, x: 1), Move(y: -1, x: -1), Move(y: -1, x: 1)],
-    ]
-    
-    
 }
