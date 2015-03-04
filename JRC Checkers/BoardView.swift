@@ -9,8 +9,8 @@ class BoardView: UIView {
 
     var turnOver = false
     var currentPlayer = Turn.black
-    var pieceMoving: PlayerColor = PlayerColor.none
-    var pieceMovingKing: PlayerColor = PlayerColor.none
+    var pieceMoving: PC = PC.none
+    var pieceMovingKing: PC = PC.none
     
     let oneLeft = -1
     let twoLeft = -2
@@ -23,7 +23,7 @@ class BoardView: UIView {
     
     var possibleMove: UIImage = UIImage(named: "selectedSquare")!
 
-    enum PlayerColor: String {
+    enum PC: String {
         case red = "red", black = "black", none = "none", redKing = "redKing", blackKing = "blackKing"
         
         static let allValues = [red, black, redKing, blackKing]
@@ -61,17 +61,17 @@ class BoardView: UIView {
     }
     
     let validM = [
-        PlayerColor.black: [Move(y: 1, x: -1), Move(y: 1, x: 1)],
-        PlayerColor.red: [Move(y: -1, x: -1), Move(y: -1, x: 1)],
-        PlayerColor.blackKing: [Move(y: 1, x: -1), Move(y: 1, x: 1), Move(y: -1, x: -1), Move(y: -1, x: 1)],
-        PlayerColor.redKing: [Move(y: 1, x: -1), Move(y: 1, x: 1), Move(y: -1, x: -1), Move(y: -1, x: 1)]
+        PC.black: [Move(y: 1, x: -1), Move(y: 1, x: 1)],
+        PC.red: [Move(y: -1, x: -1), Move(y: -1, x: 1)],
+        PC.blackKing: [Move(y: 1, x: -1), Move(y: 1, x: 1), Move(y: -1, x: -1), Move(y: -1, x: 1)],
+        PC.redKing: [Move(y: 1, x: -1), Move(y: 1, x: 1), Move(y: -1, x: -1), Move(y: -1, x: 1)]
     ]
     
     let validJ = [
-        PlayerColor.black: [Move(y: 2, x: -2), Move( y: 2, x: 2)],
-        PlayerColor.red: [Move(y: -2, x: -2), Move(y: -2, x: 2)],
-        PlayerColor.blackKing: [Move(y: 2, x: -2), Move( y: 2, x: 2), Move(y: -2, x: -2), Move(y: -2, x: 2)],
-        PlayerColor.redKing: [Move(y: 2, x: -2), Move( y: 2, x: 2), Move(y: -2, x: -2), Move(y: -2, x: 2)]
+        PC.black: [Move(y: 2, x: -2), Move( y: 2, x: 2)],
+        PC.red: [Move(y: -2, x: -2), Move(y: -2, x: 2)],
+        PC.blackKing: [Move(y: 2, x: -2), Move( y: 2, x: 2), Move(y: -2, x: -2), Move(y: -2, x: 2)],
+        PC.redKing: [Move(y: 2, x: -2), Move( y: 2, x: 2), Move(y: -2, x: -2), Move(y: -2, x: 2)]
     ]
     
     /*
@@ -81,15 +81,15 @@ class BoardView: UIView {
     var pieceSelected: Position?
     var moveTo: Position?
     
-    var gameBoard: [[PlayerColor]] = [
-        [PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black],
-        [PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none],
-        [PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black],
-        [PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none],
-        [PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none],
-        [PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none],
-        [PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red],
-        [PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none],
+    var gameBoard: [[PC]] = [
+        [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
+        [PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none],
+        [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
+        [PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none],
+        [PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none],
+        [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
+        [PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red],
+        [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
     ]
     
     
@@ -104,7 +104,7 @@ class BoardView: UIView {
         
         for (var y = 0; y < 8; y++) {
             for (var x = 0; x < 8; x++) {
-                for color in PlayerColor.allValues {
+                for color in PC.allValues {
                     if gameBoard[y][x] == color {
                         var pieceImage: UIImage = UIImage(named: color.description)!
                         var pieceSize: CGRect = CGRect(x: (8 + (x * pieceWidth)), y: (8 + (y * pieceHeight)), width: pieceWidth,height: pieceHeight)
@@ -121,7 +121,7 @@ class BoardView: UIView {
     
     func movePiece(from: (y1: Int, x1: Int), to: (y2: Int, x2: Int)) {
         let pieceToMove = gameBoard[pieceSelected!.y][pieceSelected!.x]
-        gameBoard[from.y1][from.x1] = PlayerColor.none
+        gameBoard[from.y1][from.x1] = PC.none
         gameBoard[to.y2][to.x2] = pieceToMove
     }
     
@@ -133,44 +133,49 @@ class BoardView: UIView {
         }
     }
     
-/*
+    func movedPosition(position: Position, move: Move) -> Position {
+        // add the move to the position and return it
+        var oldPosition = Position(y: position.y, x: position.x)
+        var newPosition = Position(y: oldPosition.y + move.y, x: oldPosition.x + move.x)
+        let withinBounds_y1 = (position.y + move.y) >= 0
+        let withinBounds_y2 = (position.y + move.y) < 8
+        let withinBounds_x1 = (position.x + move.x) >= 0
+        let withinBounds_x2 = (position.x + move.x) < 8
+        if withinBounds_y1 && withinBounds_y2 && withinBounds_x1 && withinBounds_x2 {
+            return newPosition
+        } else {
+            return position
+        }
+    }
+    
     func moveIsValid(spot: Position) -> Bool {
         var isValid = false
-        let y_diff = spot.y - self.pieceSelected!.y
-        let x_diff = spot.x - self.pieceSelected!.x
-        let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
-        let spot1 = gameBoard[pieceSelected!.y + y_diff/2][pieceSelected!.x + x_diff/2]
-        let spot2 = gameBoard[spot.y][spot.x]
+        let spotToMoveTo = gameBoard[spot.y][spot.x]
+        
+        if spotToMoveTo == PC.none {
+            isValid = true
+        }
+        
+        return isValid
+    }
+    
+    func movesAllowed(pieceToCheck: Position) -> [Position] {
+        var validMoves: [Position] = []
+        let piece = gameBoard[pieceToCheck.y][pieceToCheck.x]
+        let moves = validM[piece]!
+        for move in moves {
 
-        let blackCond: Bool = piece1 == PlayerColor.black && y_diff == twoDown && (spot1 == PlayerColor.red || spot1 == PlayerColor.redKing) && spot.y < 8
-        let redCond: Bool = piece1 == PlayerColor.red && y_diff == twoUp && (spot1 == PlayerColor.black || spot1 == PlayerColor.blackKing) && spot.y >= 0
-        let blackKingCond: Bool = piece1 == PlayerColor.blackKing && (y_diff == twoDown || y_diff == twoUp) && (spot1 == PlayerColor.red || spot1 == PlayerColor.redKing) && spot.y < 8 && spot.y >= 0
-        let redKingCond: Bool = piece1 == PlayerColor.redKing && (y_diff == twoDown || y_diff == twoUp) && (spot1 == PlayerColor.black || spot1 == PlayerColor.blackKing) && spot.y < 8 && spot.y >= 0
-        
-        if blackCond || redCond || blackKingCond || redKingCond {
-            if (x_diff == twoLeft && spot.x >= 0) || (x_diff == twoRight && spot.x < 8) {
-                if spot2 == PlayerColor.none {
-                    isValid = true
-                }
+            if moveIsValid(movedPosition(pieceToCheck, move: move)) {
+                validMoves.append(movedPosition(pieceToCheck, move: move))
             }
         }
-        
-        if y_diff == oneDown && (x_diff == oneLeft || x_diff == oneRight) && piece1 == PlayerColor.black && spot2 == PlayerColor.none {
-            isValid = true
-        }
-        if y_diff == oneUp && (x_diff == oneLeft || x_diff == oneRight) && piece1 == PlayerColor.red && spot2 == PlayerColor.none {
-            isValid = true
-        }
-        if (y_diff == oneUp || y_diff == oneDown) && (x_diff == oneLeft || x_diff == oneRight) && (piece1 == PlayerColor.blackKing || piece1 == PlayerColor.redKing) && spot2 == PlayerColor.none {
-            isValid = true
-        }
-        
-        return isValid
+        println("Possible moves: \(validMoves)")
+        return validMoves
     }
-    
+    /*
     func movesAllowed(piece: Position) -> [Position] {
         var validMoves: [Position] = []
-        // Chris changed his mind. Use validMoves
+        // Chris changed his mind. Use validMoves <- do this. And make move is valid way smaller!!!
         for x in 0...7 {
             for y in 0...7 {
                 if moveIsValid(Position(y: y, x: x)) {
@@ -180,75 +185,40 @@ class BoardView: UIView {
         }
         println("Possible moves: \(validMoves)")
         return validMoves
-    }
-    */
-    func moveIsValid(spot: Position) -> Bool {
-        var isValid = false
-        let y_diff = spot.y - self.pieceSelected!.y
-        let x_diff = spot.x - self.pieceSelected!.x
-        let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
-        let spot1 = gameBoard[pieceSelected!.y + y_diff/2][pieceSelected!.x + x_diff/2]
-        let spot2 = gameBoard[spot.y][spot.x]
-        
-        if y_diff == oneDown && (x_diff == oneLeft || x_diff == oneRight) && piece1 == PlayerColor.black && spot2 == PlayerColor.none {
-            isValid = true
-        }
-        if y_diff == oneUp && (x_diff == oneLeft || x_diff == oneRight) && piece1 == PlayerColor.red && spot2 == PlayerColor.none {
-            isValid = true
-        }
-        if (y_diff == oneUp || y_diff == oneDown) && (x_diff == oneLeft || x_diff == oneRight) && (piece1 == PlayerColor.blackKing || piece1 == PlayerColor.redKing) && spot2 == PlayerColor.none {
-            isValid = true
-        }
-        
-        return isValid
-    }
+    }*/
     
-    func movesAllowed(piece: Position) -> [Position] {
-        var validMoves: [Position] = []
-        // Chris changed his mind. Use validMoves
-        for x in 0...7 {
-            for y in 0...7 {
-                if moveIsValid(Position(y: y, x: x)) {
-                    validMoves.append(Position(y: y, x: x))
-                }
-            }
-        }
-        println("Possible moves: \(validMoves)")
-        return validMoves
-    }
-    
-    func jumpIsValid(spot: Position) -> Bool {
+
+
+ 
+    func jumpIsValid(spot: Position, jump: Move) -> Bool {
         var isValid = false
-        let y_diff = spot.y - self.pieceSelected!.y
-        let x_diff = spot.x - self.pieceSelected!.x
         let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
-        let spot1 = gameBoard[pieceSelected!.y + y_diff/2][pieceSelected!.x + x_diff/2]
-        let spot2 = gameBoard[spot.y][spot.x]
+        let spot1 = gameBoard[movedPosition(pieceSelected!.y, move: jump.y/2)][movedPosition(pieceSelected!.x, move: jump.x/2)]
+        let spotToMoveTo = gameBoard[spot.y][spot.x]
         
-        let blackCond: Bool = piece1 == PlayerColor.black && y_diff == twoDown && (spot1 == PlayerColor.red || spot1 == PlayerColor.redKing) && spot.y < 8
-        let redCond: Bool = piece1 == PlayerColor.red && y_diff == twoUp && (spot1 == PlayerColor.black || spot1 == PlayerColor.blackKing) && spot.y >= 0
-        let blackKingCond: Bool = piece1 == PlayerColor.blackKing && (y_diff == twoDown || y_diff == twoUp) && (spot1 == PlayerColor.red || spot1 == PlayerColor.redKing) && spot.y < 8 && spot.y >= 0
-        let redKingCond: Bool = piece1 == PlayerColor.redKing && (y_diff == twoDown || y_diff == twoUp) && (spot1 == PlayerColor.black || spot1 == PlayerColor.blackKing) && spot.y < 8 && spot.y >= 0
+        let blackCond: Bool = piece1 == PC.black && (spot1 == PC.red || spot1 == PC.redKing)
+        let redCond: Bool = piece1 == PC.red &&  && (spot1 == PC.black || spot1 == PC.blackKing)
+        let blackKingCond: Bool = piece1 == PC.blackKing && (spot1 == PC.red || spot1 == PC.redKing)
+        let redKingCond: Bool = piece1 == PC.redKing  && (spot1 == PC.black || spot1 == PC.blackKing)
         
         if blackCond || redCond || blackKingCond || redKingCond {
-            if (x_diff == twoLeft && spot.x >= 0) || (x_diff == twoRight && spot.x < 8) {
-                if spot2 == PlayerColor.none {
-                    isValid = true
-                }
+            if spotToMoveTo == PC.none {
+                isValid = true
+            
             }
         }
         
         return isValid
     }
     
-    func jumpsAllowed(piece: Position) -> [Position] {
+    func jumpsAllowed(pieceToCheck: Position) -> [Position] {
         var validJumps: [Position] = []
-        // Chris changed his mind. Use validMoves
-        for x in 0...7 {
-            for y in 0...7 {
-                if jumpIsValid(Position(y: y, x: x)) {
-                    validJumps.append(Position(y: y, x: x))
-                }
+        let piece = gameBoard[pieceToCheck.y][pieceToCheck.x]
+        let jumps = validJ[piece]!
+        for jump in jumps {
+            
+            if jumpIsValid(movedPosition(pieceToCheck, move: jump), jump: jump) {
+                validJumps.append(movedPosition(pieceToCheck, move: jump))
             }
         }
         println("Possible moves: \(validJumps)")
@@ -256,7 +226,7 @@ class BoardView: UIView {
     }
 
  
-    func validJump(spot: Position, color: PlayerColor, color2: PlayerColor) -> Bool {
+    func validJump(spot: Position, color: PC, color2: PC) -> Bool {
         if spot.y == 0 && spot.x == 5 {
             println("chris smells")
         }
@@ -266,21 +236,21 @@ class BoardView: UIView {
         if piece1 == color || piece1 == color2 {
         for jump in validJ[piece1]! {
         
-            let blackCond: Bool = piece1 == PlayerColor.black && jump.y == twoDown  && spot.y < 6
-            let redCond: Bool = piece1 == PlayerColor.red && jump.y == twoUp && spot.y > 1
-            let blackKingCond1: Bool = piece1 == PlayerColor.blackKing && jump.y == twoDown && spot.y < 6
-            let blackKingCond2: Bool = piece1 == PlayerColor.blackKing && jump.y == twoUp && spot.y > 1
-            let redKingCond1: Bool = piece1 == PlayerColor.redKing && jump.y == twoDown && spot.y < 6
-            let redKingCond2: Bool = piece1 == PlayerColor.redKing && jump.y == twoUp && spot.y > 1
+            let blackCond: Bool = piece1 == PC.black && jump.y == twoDown  && spot.y < 6
+            let redCond: Bool = piece1 == PC.red && jump.y == twoUp && spot.y > 1
+            let blackKingCond1: Bool = piece1 == PC.blackKing && jump.y == twoDown && spot.y < 6
+            let blackKingCond2: Bool = piece1 == PC.blackKing && jump.y == twoUp && spot.y > 1
+            let redKingCond1: Bool = piece1 == PC.redKing && jump.y == twoDown && spot.y < 6
+            let redKingCond2: Bool = piece1 == PC.redKing && jump.y == twoUp && spot.y > 1
         
             if blackCond || redCond || blackKingCond1 || redKingCond1 || blackKingCond2 || redKingCond2 {
                 if (jump.x == twoLeft && spot.x > 1) || (jump.x == twoRight && spot.x < 6) {
                     let spot1 = gameBoard[spot.y + jump.y/2][spot.x + jump.x/2]
                     let spot2 = gameBoard[spot.y + jump.y][spot.x + jump.x]
-                    if spot2 == PlayerColor.none && (spot1 == PlayerColor.red || spot1 == PlayerColor.redKing) && (piece1 == PlayerColor.black || piece1 == PlayerColor.blackKing) {
+                    if spot2 == PC.none && (spot1 == PC.red || spot1 == PC.redKing) && (piece1 == PC.black || piece1 == PC.blackKing) {
                         isValid = true
                     }
-                    if spot2 == PlayerColor.none && (spot1 == PlayerColor.black || spot1 == PlayerColor.blackKing) && (piece1 == PlayerColor.red || piece1 == PlayerColor.redKing) {
+                    if spot2 == PC.none && (spot1 == PC.black || spot1 == PC.blackKing) && (piece1 == PC.red || piece1 == PC.redKing) {
                         isValid = true
                     }
                 }
@@ -289,42 +259,16 @@ class BoardView: UIView {
         }
         return isValid
     }
-    
-    func thereIsAJump(player: Turn) -> Bool {
-        var jump = false
-        var piece1 = PlayerColor.none     //reg piece
-        var piece2 = PlayerColor.none     //king piece
-        if player == Turn.black {
-            piece1 = PlayerColor.black
-            piece2 = PlayerColor.blackKing
-        } else {
-            piece1 = PlayerColor.red
-            piece2 = PlayerColor.redKing
-        }
-        
-        for (var y = 0; y < 8; y++) {
-            for (var x = 0; x < 8; x++) {
-   //             for color in PlayerColor.allValues {
-   //                 let pieceToCheck = gameBoard[y][x]
-                    let piecePosition = Position(y: y, x: x)
-                    if validJump(piecePosition, color: piece1, color2: piece2) {
-                        jump = true
-                    }
-    //            }
-            }
-        }
-        return jump
-    }
 
     
     func kingMe() {
         //King at the last row
-        if moveTo!.y == 0 && pieceMoving == PlayerColor.red {
-            gameBoard[moveTo!.y][moveTo!.x] = PlayerColor.redKing
+        if moveTo!.y == 0 && pieceMoving == PC.red {
+            gameBoard[moveTo!.y][moveTo!.x] = PC.redKing
             turnOver = true
         }
-        if moveTo!.y == 7 && pieceMoving == PlayerColor.black {
-            gameBoard[moveTo!.y][moveTo!.x] = PlayerColor.blackKing
+        if moveTo!.y == 7 && pieceMoving == PC.black {
+            gameBoard[moveTo!.y][moveTo!.x] = PC.blackKing
             turnOver = true
         }
     }
@@ -347,17 +291,16 @@ class BoardView: UIView {
             let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
         
             if currentPlayer == Turn.black {
-                pieceMoving = PlayerColor.black
-                pieceMovingKing = PlayerColor.blackKing
+                pieceMoving = PC.black
+                pieceMovingKing = PC.blackKing
             } else {
-                pieceMoving = PlayerColor.red
-                pieceMovingKing = PlayerColor.redKing
+                pieceMoving = PC.red
+                pieceMovingKing = PC.redKing
             }
         
-            if piece1 != PlayerColor.none {
+            if piece1 != PC.none {
                 let validMoves = movesAllowed(pieceSelected!)
                 let validJumps = jumpsAllowed(pieceSelected!)
-                var noForceJump: Bool = true
                 let capture_y = pieceSelected!.y + (moveTo!.y - pieceSelected!.y)/2
                 let capture_x = pieceSelected!.x + (moveTo!.x - pieceSelected!.x)/2
                 
@@ -365,10 +308,9 @@ class BoardView: UIView {
                     for move in validJ[piece1]! {
                         println("there is a jump")
                         
-                        if moveTo!.y == (pieceSelected!.y + move.y) && moveTo!.x == (pieceSelected!.x + move.x) && gameBoard[pieceSelected!.y + move.y/2][pieceSelected!.x + move.x/2] != PlayerColor.none {
-                            noForceJump = false
+                        if moveTo!.y == (pieceSelected!.y + move.y) && moveTo!.x == (pieceSelected!.x + move.x) && gameBoard[pieceSelected!.y + move.y/2][pieceSelected!.x + move.x/2] != PC.none {
                             movePiece((y1: pieceSelected!.y, x1: pieceSelected!.x), to: (y2: moveTo!.y, x2: moveTo!.x))
-                            gameBoard[capture_y][capture_x] = PlayerColor.none
+                            gameBoard[capture_y][capture_x] = PC.none
                             kingMe()
                             if validJump(moveTo!, color: pieceMoving, color2: pieceMovingKing) {
                                 pieceSelected = moveTo
@@ -380,7 +322,7 @@ class BoardView: UIView {
                 } else {
                     for move in validM[piece1]! {
                         
-                        if moveTo!.y == (pieceSelected!.y + move.y) && moveTo!.x == (pieceSelected!.x + move.x) && gameBoard[moveTo!.y][moveTo!.x] == PlayerColor.none {
+                        if moveTo!.y == (pieceSelected!.y + move.y) && moveTo!.x == (pieceSelected!.x + move.x) && gameBoard[moveTo!.y][moveTo!.x] == PC.none {
                             movePiece((y1: pieceSelected!.y, x1: pieceSelected!.x), to: (y2: moveTo!.y, x2: moveTo!.x))
                             kingMe()
                             turnOver = true
@@ -398,12 +340,12 @@ class BoardView: UIView {
         
         if  (pieceSelected == nil) {
             if currentPlayer == Turn.black {
-                if gameBoard[yCoord][xCoord] == PlayerColor.black || gameBoard[yCoord][xCoord] == PlayerColor.blackKing {
+                if gameBoard[yCoord][xCoord] == PC.black || gameBoard[yCoord][xCoord] == PC.blackKing {
                     pieceSelected = Position(y: yCoord, x: xCoord)
                     //               movesAllowed(pieceSelected!)
                 }
             } else {
-                if gameBoard[yCoord][xCoord] == PlayerColor.red || gameBoard[yCoord][xCoord] == PlayerColor.redKing {
+                if gameBoard[yCoord][xCoord] == PC.red || gameBoard[yCoord][xCoord] == PC.redKing {
                     pieceSelected = Position(y: yCoord, x: xCoord)
                     //               movesAllowed(pieceSelected!)
                 }
@@ -426,14 +368,14 @@ class BoardView: UIView {
     //assumes that left and right are relative to the user's view
     func showPossibleMoves() {
         let piece = gameBoard[pieceSelected!.y][pieceSelected!.x]
-        if piece != PlayerColor.none {
-            var selectedPieceImages = [PlayerColor.red: "selectedRed", PlayerColor.black: "selectedBlack", PlayerColor.redKing: "selectedRedKing", PlayerColor.blackKing: "selectedBlackKing"]
+        if piece != PC.none {
+            var selectedPieceImages = [PC.red: "selectedRed", PC.black: "selectedBlack", PC.redKing: "selectedRedKing", PC.blackKing: "selectedBlackKing"]
             var selected: UIImage = UIImage(named: selectedPieceImages[piece]!)!
             var sq: CGRect = CGRect(x: (8 + (pieceWidth * (self.pieceSelected!.x))), y: 8 + (pieceHeight * (self.pieceSelected!.y)), width: pieceWidth, height: pieceHeight)
             selected.drawInRect(sq)
         }
         
-        if piece != PlayerColor.none {
+        if piece != PC.none {
             let validMoves = movesAllowed(pieceSelected!)
             let validJumps = jumpsAllowed(pieceSelected!)
             var noForceJump: Bool = true
@@ -475,19 +417,19 @@ class BoardView: UIView {
     
     func resetGame() {
         gameBoard = [
-        [PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black],
-        [PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none],
-        [PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black, PlayerColor.none, PlayerColor.black],
-        [PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none],
-        [PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none, PlayerColor.none],
-        [PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none],
-        [PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red],
-        [PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none, PlayerColor.red, PlayerColor.none],
+        [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
+        [PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none],
+        [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
+        [PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none],
+        [PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none],
+        [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
+        [PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red],
+        [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
         ]
         turnOver = false
         currentPlayer = Turn.black
-        pieceMoving = PlayerColor.none
-        pieceMovingKing = PlayerColor.none
+        pieceMoving = PC.none
+        pieceMovingKing = PC.none
         pieceSelected = nil
         moveTo = nil
         self.setNeedsDisplay()
