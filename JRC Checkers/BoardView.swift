@@ -158,17 +158,13 @@ class BoardView: UIView {
  
     func jumpIsValid(spot: Position, jump: Move) -> Bool {
         var isValid = false
-        var obstacle = Move(y: -jump.y/2, x: -jump.x/2)
-        var spot1_position = movedPosition(spot, move: obstacle)
-        let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
+        //get the position of the obstacle
+        var spot1_position = movedPosition(spot, move: Move(y: -jump.y/2, x: -jump.x/2))
         let spot1 = gameBoard[spot1_position.y][spot1_position.x]
-        let spotToMoveTo = gameBoard[spot.y][spot.x]
         
-        let blackCond: Bool = currentTeam == Team.black && (spot1 == PC.red || spot1 == PC.redKing)
-        let redCond: Bool = currentTeam == Team.red && (spot1 == PC.black || spot1 == PC.blackKing)
-        
-        if blackCond || redCond {
-            if spotToMoveTo == PC.none {
+        //check that the obstacle of the jump is the enemy
+        if (currentTeam == Team.black && (spot1 == PC.red || spot1 == PC.redKing)) || (currentTeam == Team.red && (spot1 == PC.black || spot1 == PC.blackKing)) {
+            if gameBoard[spot.y][spot.x] == PC.none {
                 isValid = true
             }
         }
@@ -274,7 +270,8 @@ class BoardView: UIView {
         return friendly
     }
     
- 
+
+
 /*
  * Display possible moves
  */
@@ -297,7 +294,6 @@ class BoardView: UIView {
             
             let validMoves = movesAllowed(pieceSelected!)
             let validJumps = jumpsAllowed(pieceSelected!)
-            var noForceJump: Bool = true
             
             if validJumps.count > 0 {
                 for jump in validJumps {
