@@ -32,6 +32,7 @@ class BoardView: UIView {
     var currentTeam = Team.black
     var pieceMoving: PC = PC.none
     var pieceMovingKing: PC = PC.none
+    var moveAlreadyStarted = false
     
     var possibleMove: UIImage = UIImage(named: "selectedSquare")!
 
@@ -88,7 +89,6 @@ class BoardView: UIView {
         [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
     ]
     
-    
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
@@ -109,7 +109,6 @@ class BoardView: UIView {
                 }
             }
         }
-        
         if pieceSelected != nil {
             showPossibleMoves()
         }
@@ -137,6 +136,7 @@ class BoardView: UIView {
         let withinBounds_y2 = (position.y + move.y) < 8
         let withinBounds_x1 = (position.x + move.x) >= 0
         let withinBounds_x2 = (position.x + move.x) < 8
+        
         if withinBounds_y1 && withinBounds_y2 && withinBounds_x1 && withinBounds_x2 {
             return newPosition
         } else {
@@ -144,24 +144,14 @@ class BoardView: UIView {
         }
     }
     
-    func moveIsValid(spot: Position) -> Bool {
-        var isValid = false
-        let spotToMoveTo = gameBoard[spot.y][spot.x]
-        
-        if spotToMoveTo == PC.none {
-            isValid = true
-        }
-        
-        return isValid
-    }
-    
     func movesAllowed(pieceToCheck: Position) -> [Position] {
         var validMoves: [Position] = []
         let piece = gameBoard[pieceToCheck.y][pieceToCheck.x]
+        
         let moves = validM[piece]!
         for move in moves {
-
-            if moveIsValid(movedPosition(pieceToCheck, move: move)) {
+            let spot = movedPosition(pieceToCheck, move: move)
+            if gameBoard[spot.y][spot.x] == PC.none {
                 validMoves.append(movedPosition(pieceToCheck, move: move))
             }
         }
@@ -185,7 +175,6 @@ class BoardView: UIView {
                 isValid = true
             }
         }
-        
         return isValid
     }
     
@@ -203,14 +192,14 @@ class BoardView: UIView {
         return validJumps
     }
 
-    func kingMe() {
+    func kingMe(newPosition: Position) {
         //King at the last row
-        if moveTo!.y == 0 && pieceMoving == PC.red {
-            gameBoard[moveTo!.y][moveTo!.x] = PC.redKing
+        if newPosition.y == 0 && pieceMoving == PC.red {
+            gameBoard[newPosition.y][newPosition.x] = PC.redKing
             turnOver = true
         }
-        if moveTo!.y == 7 && pieceMoving == PC.black {
-            gameBoard[moveTo!.y][moveTo!.x] = PC.blackKing
+        if newPosition.y == 7 && pieceMoving == PC.black {
+            gameBoard[newPosition.y][newPosition.x] = PC.blackKing
             turnOver = true
         }
     }
@@ -234,14 +223,113 @@ class BoardView: UIView {
         let xCoord = pieceTouched.x;
         let yCoord = pieceTouched.y;
         
+        println("it is \(currentTeam.description)'s turn")
+        println("touched piece: \(gameBoard[yCoord][xCoord].description) -- (y: \(yCoord), x: \(xCoord))")
+        
+        if moveAlreadyStarted && pieceSelected != nil {
+            
+            tryToMovePiece(to: pieceTouched)
+            
+            
+        } else {
+            
+            if isFriendly(pieceTouched) {
+                
+                pieceSelected = pieceTouched
+                
+            } else if isEnemy(pieceTouched) {
+                
+                pieceSelected = nil
+            
+            } else if (pieceSelected != nil) {
+                
+                tryToMovePiece(to: pieceTouched)
+                
+            }
+        }
+     }
+    
+    func isFriendly(pieceTouched: Position) -> Bool {
+        var friendly = false
+        let pieceInQuestion = gameBoard[pieceTouched.y][pieceTouched.x]
+        
+        if currentTeam == Team.black && (pieceInQuestion == PC.black || pieceInQuestion == PC.blackKing) {
+            friendly = true
+        } else if currentTeam == Team.red && (pieceInQuestion == PC.red || pieceInQuestion == PC.redKing) {
+            friendly = true
+        }
+        return friendly
+    }
+    
+    func isEnemy(pieceTouched: Position) -> Bool {
+        var enemy = false
+        let pieceInQuestion = gameBoard[pieceTouched.y][pieceTouched.x]
+        
+        if currentTeam == Team.black && (pieceInQuestion == PC.red || pieceInQuestion == PC.redKing) {
+            enemy = true
+        } else if currentTeam == Team.red && (pieceInQuestion == PC.black || pieceInQuestion == PC.blackKing) {
+            enemy = true
+        }
+        return enemy
+    }
+    
+    func tryToMovePiece(to newPosition: Position) {
+        if pieceSelected != nil {
+            let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
+            if piece1 != PC.none {    //might be able to remove this
+                let validMoves = movesAllowed(pieceSelected!)
+                let validJumps = jumpsAllowed(pieceSelected!)
+                let capture_y = pieceSelected!.y + (newPosition.y - pieceSelected!.y)/2
+                let capture_x = pieceSelected!.x + (newPosition.x - pieceSelected!.x)/2
+                
+                if validJumps.count > 0 {
+                    for jump in validJumps {
+                        if newPosition == jump && isEnemy(Position(y: capture_y, x: capture_x)) {
+                            movePiece(pieceSelected!, to: newPosition)
+                            gameBoard[capture_y][capture_x] = PC.none
+                            kingMe(newPosition)
+                        }
+                    }
+                    let nextJump = jumpsAllowed(newPosition)
+                    if nextJump.count > 0 {
+                        pieceSelected = newPosition
+                        moveAlreadyStarted = true
+                    } else {
+                        turnOver = true
+                    }
+                } else {
+                    for move in validMoves {
+                        if newPosition == move && gameBoard[newPosition.y][newPosition.x] == PC.none {
+                            movePiece(pieceSelected!, to: newPosition)
+                            kingMe(newPosition)
+                            turnOver = true
+                        }
+                    }
+                }
+                
+                if turnOver {
+                    turnSwitch()
+                    pieceSelected = nil
+                }
+            }
+
+        }
+    }
+    
+
+    /*
+    func pieceWasTouched(pieceTouched: Position) {
+        let xCoord = pieceTouched.x;
+        let yCoord = pieceTouched.y;
+    
         turnOver = false
         println("it is \(currentTeam.description)'s turn")
-        
+    
         println("touched piece: \(gameBoard[yCoord][xCoord].description) -- (y: \(yCoord), x: \(xCoord))")
         if pieceSelected != nil {
             moveTo = Position(y: yCoord, x: xCoord)
             let piece1 = gameBoard[pieceSelected!.y][pieceSelected!.x]
-            
+    
             if currentTeam == Team.black {
                 pieceMoving = PC.black
                 pieceMovingKing = PC.blackKing
@@ -249,7 +337,7 @@ class BoardView: UIView {
                 pieceMoving = PC.red
                 pieceMovingKing = PC.redKing
             }
-            
+    
             if piece1 != PC.none {
                 let validMoves = movesAllowed(pieceSelected!)
                 let validJumps = jumpsAllowed(pieceSelected!)
@@ -258,11 +346,6 @@ class BoardView: UIView {
                 
                 if validJumps.count > 0 {
                     for jump in validJumps {
-
-                        //moveTo!.y == (pieceSelected!.y + move.y) && moveTo!.x == (pieceSelected!.x + move.x) && gameBoard[pieceSelected!.y + move.y/2][pieceSelected!.x + move.x/2] != PC.none 
-                        
-                        //moveTo == movedPosition(position: pieceSelected!, move: move) && gameBoard[pieceSelected!.y + move.y/2][pieceSelected!.x + move.x/2] != PC.none
-                        
                         if moveTo! == jump && gameBoard[capture_y][capture_x] != PC.none {
                             movePiece(pieceSelected!, to: moveTo!)
                             gameBoard[capture_y][capture_x] = PC.none
@@ -277,7 +360,6 @@ class BoardView: UIView {
                     }
                 } else {
                     for move in validMoves {
-                        
                         if moveTo! == move && gameBoard[moveTo!.y][moveTo!.x] == PC.none {
                             movePiece(pieceSelected!, to: moveTo!)
                             kingMe()
@@ -304,8 +386,7 @@ class BoardView: UIView {
                 }
             }
         }
-    }
-
+    }*/
 
 /*
  * Display possible moves
@@ -325,9 +406,8 @@ class BoardView: UIView {
             var selected: UIImage = UIImage(named: selectedPieceImages[piece]!)!
             var sq: CGRect = CGRect(x: (8 + (pieceWidth * (self.pieceSelected!.x))), y: 8 + (pieceHeight * (self.pieceSelected!.y)), width: pieceWidth, height: pieceHeight)
             selected.drawInRect(sq)
-        }
-        
-        if piece != PC.none {
+
+            
             let validMoves = movesAllowed(pieceSelected!)
             let validJumps = jumpsAllowed(pieceSelected!)
             var noForceJump: Bool = true
@@ -342,7 +422,7 @@ class BoardView: UIView {
             } else {
                 for move in validMoves {
                     if gameBoard[move.y][move.x] == PC.none {
-                        let regMove = Move(y: pieceSelected!.y - move.y, x: pieceSelected!.x - move.x)
+                        let regMove = Move(y: move.y - pieceSelected!.y, x: move.x - pieceSelected!.x)
                         possibleMoveImages(pieceSelected!, offset: regMove)
                     }
                 }
@@ -370,9 +450,7 @@ class BoardView: UIView {
         self.setNeedsDisplay()
     }
     
-    
-    
-    
+
     /*
     
     
