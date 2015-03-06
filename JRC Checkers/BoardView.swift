@@ -72,7 +72,6 @@ class BoardView: UIView {
      */
     
     var pieceSelected: Position?
-    var moveTo: Position?
     
     var gameBoard: [[PC]] = [
         [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
@@ -214,8 +213,7 @@ class BoardView: UIView {
     
     func pieceWasTouched(pieceTouched: Position) {
         turnOver = false
-        moveTo = pieceTouched
-        let nextPiece = gameBoard[moveTo!.y][moveTo!.x]
+        let nextPiece = gameBoard[pieceTouched.y][pieceTouched.x]
         println("it is \(currentTeam.description)'s turn")
         println("touched piece: \(gameBoard[pieceTouched.y][pieceTouched.x].description) -- (y: \(pieceTouched.y), x: \(pieceTouched.x))")
 
@@ -226,18 +224,18 @@ class BoardView: UIView {
             
             let validMoves = movesAllowed(pieceSelected!)
             let validJumps = jumpsAllowed(pieceSelected!)
-            let capture_y = pieceSelected!.y + (moveTo!.y - pieceSelected!.y)/2
-            let capture_x = pieceSelected!.x + (moveTo!.x - pieceSelected!.x)/2
+            let capture_y = pieceSelected!.y + (pieceTouched.y - pieceTouched.y)/2
+            let capture_x = pieceSelected!.x + (pieceTouched.x - pieceTouched.x)/2
             
             if validJumps.count > 0 {
                 for jump in validJumps {
-                    if moveTo! == jump && gameBoard[capture_y][capture_x] != PC.none {
-                        movePiece(pieceSelected!, to: moveTo!)
+                    if pieceTouched == jump && gameBoard[capture_y][capture_x] != PC.none {
+                        movePiece(pieceSelected!, to: pieceTouched)
                         gameBoard[capture_y][capture_x] = PC.none
-                        kingMe(newPosition: moveTo!)
-                        let nextJump = jumpsAllowed(moveTo!)
+                        kingMe(newPosition: pieceTouched)
+                        let nextJump = jumpsAllowed(pieceTouched)
                         if nextJump.count > 0 {
-                            pieceSelected = moveTo
+                            pieceSelected = pieceTouched
                         } else {
                             turnOver = true
                         }
@@ -245,9 +243,9 @@ class BoardView: UIView {
                 }
             } else {
                 for move in validMoves {
-                    if moveTo! == move && gameBoard[moveTo!.y][moveTo!.x] == PC.none {
-                        movePiece(pieceSelected!, to: moveTo!)
-                        kingMe(newPosition: moveTo!)
+                    if pieceTouched == move && gameBoard[pieceTouched.y][pieceTouched.x] == PC.none {
+                        movePiece(pieceSelected!, to: pieceTouched)
+                        kingMe(newPosition: pieceTouched)
                         turnOver = true
                     }
                 }
@@ -327,7 +325,6 @@ class BoardView: UIView {
         turnOver = false
         currentTeam = Team.black
         pieceSelected = nil
-        moveTo = nil
         self.setNeedsDisplay()
     }
     
