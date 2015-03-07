@@ -141,6 +141,7 @@ class BoardView: UIView {
         }
     }
     
+    //checks valid moves from validM; the possible moves are the ones where the new position is empty
     func movesAllowed(pieceToCheck: Position) -> [Position] {
         var validMoves: [Position] = []
         let piece = gameBoard[pieceToCheck.y][pieceToCheck.x]
@@ -156,15 +157,15 @@ class BoardView: UIView {
         return validMoves
     }
  
-    func jumpIsValid(spot: Position, jump: Move) -> Bool {
+    func jumpIsValid(jumpPosition: Position, jump: Move) -> Bool {
         var isValid = false
         //get the position of the obstacle
-        var spot1_position = movedPosition(spot, move: Move(y: -jump.y/2, x: -jump.x/2))
-        let spot1 = gameBoard[spot1_position.y][spot1_position.x]
+        var obstacle_position = movedPosition(jumpPosition, move: Move(y: -jump.y/2, x: -jump.x/2))
+        let obstacle = gameBoard[obstacle_position.y][obstacle_position.x]
         
         //check that the obstacle of the jump is the enemy
-        if (currentTeam == Team.black && isEnemy(spot1)) || (currentTeam == Team.red && isEnemy(spot1)) {
-            if gameBoard[spot.y][spot.x] == PC.none {
+        if (currentTeam == Team.black && isEnemy(obstacle)) || (currentTeam == Team.red && isEnemy(obstacle)) {
+            if gameBoard[jumpPosition.y][jumpPosition.x] == PC.none {
                 isValid = true
             }
         }
@@ -204,7 +205,7 @@ class BoardView: UIView {
             for x in 0...7 {
                 let piecePosition = Position(y: y, x: x)
                 let nextPiece = gameBoard[piecePosition.y][piecePosition.x]
-                if  isFriendly(nextPiece) {
+                if isFriendly(nextPiece) {
                     if jumpsAllowed(piecePosition).count > 0 {
                         forceJump = true
                     }
@@ -288,13 +289,15 @@ class BoardView: UIView {
                 }
             }
             
-            if turnOver && !enemyIsAllCaptured() {
-                turnSwitch()
+            if turnOver {
+                if enemyIsAllCaptured() {
+                    userMessage.text = "\(currentTeam.description) wins!"
+                } else {
+                    turnSwitch()
+                    moveAlreadyStarted = false
+                    userMessage.text = "It is \(currentTeam.description)'s turn"
+                }
                 pieceSelected = nil
-                moveAlreadyStarted = false
-                userMessage.text = "It is \(currentTeam.description)'s turn"
-            } else if enemyIsAllCaptured() {
-                userMessage.text = "\(currentTeam.description) wins!"
             }
         }
     }
