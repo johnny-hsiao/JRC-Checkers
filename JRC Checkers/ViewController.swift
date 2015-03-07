@@ -14,6 +14,9 @@ class ViewController: UIViewController {
     
     @IBOutlet var resetButton: UIButton!
     
+
+    
+    
     @IBAction func resetButtonClicked(sender: UIButton) {
         board.resetGame()
     }

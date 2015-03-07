@@ -23,6 +23,8 @@ struct Move: Printable {
 
 class BoardView: UIView {
     
+    @IBOutlet var userMessage: UILabel!
+    
     let pieceSize: Int = 38
 
     var turnOver = false
@@ -161,7 +163,7 @@ class BoardView: UIView {
         let spot1 = gameBoard[spot1_position.y][spot1_position.x]
         
         //check that the obstacle of the jump is the enemy
-        if (currentTeam == Team.black && (spot1 == PC.red || spot1 == PC.redKing)) || (currentTeam == Team.red && (spot1 == PC.black || spot1 == PC.blackKing)) {
+        if (currentTeam == Team.black && isEnemy(spot1)) || (currentTeam == Team.red && isEnemy(spot1)) {
             if gameBoard[spot.y][spot.x] == PC.none {
                 isValid = true
             }
@@ -212,6 +214,23 @@ class BoardView: UIView {
         
         return forceJump
     }
+    
+    func enemyIsAllCaptured() -> Bool {
+        var allEnemiesCaptured = true
+        
+        for y in 0...7 {
+            for x in 0...7 {
+                let piecePosition = Position(y: y, x: x)
+                let nextPiece = gameBoard[piecePosition.y][piecePosition.x]
+                if isEnemy(nextPiece) {
+                    allEnemiesCaptured = false
+                }
+            }
+        }
+        
+        return allEnemiesCaptured
+    }
+
 
     override func touchesEnded(touches: NSSet, withEvent event:UIEvent) {
         var touch: UITouch = touches.anyObject() as UITouch
@@ -269,10 +288,13 @@ class BoardView: UIView {
                 }
             }
             
-            if turnOver {
+            if turnOver && !enemyIsAllCaptured() {
                 turnSwitch()
                 pieceSelected = nil
                 moveAlreadyStarted = false
+                userMessage.text = "It is \(currentTeam.description)'s turn"
+            } else if enemyIsAllCaptured() {
+                userMessage.text = "\(currentTeam.description) wins!"
             }
         }
     }
@@ -285,6 +307,16 @@ class BoardView: UIView {
             friendly = true
         }
         return friendly
+    }
+    
+    func isEnemy(pieceInQuestion: PC) -> Bool {
+        var isAnEnemy = false
+        if currentTeam == Team.black && (pieceInQuestion == PC.red || pieceInQuestion == PC.redKing) {
+            isAnEnemy = true
+        } else if currentTeam == Team.red && (pieceInQuestion == PC.black || pieceInQuestion == PC.blackKing) {
+            isAnEnemy = true
+        }
+        return isAnEnemy
     }
 
 /*
@@ -342,6 +374,8 @@ class BoardView: UIView {
         turnOver = false
         currentTeam = Team.black
         pieceSelected = nil
+        moveAlreadyStarted = false
+        userMessage.text = "It is \(currentTeam.description)'s turn"
         self.setNeedsDisplay()
     }
 }
