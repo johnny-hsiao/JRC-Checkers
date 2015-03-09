@@ -1,63 +1,175 @@
 import UIKit
 
-
-struct Position: Printable, Equatable {
-    let y: Int
-    let x: Int
-    var description: String {
-        return "(\(y), \(x))"
-    }
-}
-
-func ==(lhs: Position, rhs: Position) -> Bool {
-    return lhs.x == rhs.x && lhs.y == rhs.y
-}
-
-struct Move: Printable {
-    let y: Int
-    let x: Int
-    var description: String {
-        return "(\(y), \(x))"
-    }
-}
-
 class BoardView: UIView {
-    
     @IBOutlet var userMessage: UILabel!
+    let boardState = BoardState()
     
     let pieceSize: Int = 38
+    
+    let board: UIImage = UIImage(named: "board")!
+    let pieceImage = [PC.red: UIImage(named: "red")!, PC.black: UIImage(named: "black")!, PC.redKing: UIImage(named: "redKing")!, PC.blackKing: UIImage(named: "blackKing")]
 
+    // Only override drawRect: if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func drawRect(rect: CGRect) {
+        let context: CGContextRef = UIGraphicsGetCurrentContext()
+        let boardSize: CGRect = CGRect(x: 0, y: 0, width: 320, height: 320)
+        board.drawInRect(boardSize)
+        
+        for (var y = 0; y < 8; y++) {
+            for (var x = 0; x < 8; x++) {
+                if boardState.gameBoard[y][x] != PC.none {
+                    let nextPiece = pieceImage[boardState.gameBoard[y][x]]!!
+                    let pieceDimension: CGRect = CGRect(x: (8 + (x * pieceSize)), y: (8 + (y * pieceSize)), width: pieceSize,height: pieceSize)
+                    nextPiece.drawInRect(pieceDimension)
+                }
+            }
+        }
+        
+        if boardState.pieceSelected != nil {
+            boardState.showPossibleMoves()
+        }
+        
+        
+    }
+    
+
+    /*
+    func aiForceJump() -> [Position] {
+        var piecesToJump: [Position] = []
+        for y in 0...7 {
+            for x in 0...7 {
+                let piecePosition = Position(y: y, x: x)
+                let nextPiece = gameBoard[piecePosition.y][piecePosition.x]
+                if isFriendly(nextPiece) {
+                    if jumpsAllowed(piecePosition).count > 0 {
+                        piecesToJump.append(piecePosition)
+                    }
+                }
+            }
+        }
+        
+        return piecesToJump
+    }
+    
+    func aiMove() -> [Position] {
+        var piecesToMove: [Position] = []
+        for y in 0...7 {
+            for x in 0...7 {
+                let piecePosition = Position(y: y, x: x)
+                let nextPiece = gameBoard[piecePosition.y][piecePosition.x]
+                if isFriendly(nextPiece) {
+                    if movesAllowed(piecePosition).count > 0 {
+                        piecesToMove.append(piecePosition)
+                    }
+                }
+            }
+        }
+        
+        return piecesToMove
+    }
+  
+    func aiTurn() {
+        
+        if isThereForceJump() {
+            pieceSelected = aiForceJump()[0]
+            let aiValidJumps = jumpsAllowed(pieceSelected!)
+            let pieceTouched = aiValidJumps[0]
+            
+            let capture_y = pieceSelected!.y + (pieceTouched.y - pieceSelected!.y)/2
+            let capture_x = pieceSelected!.x + (pieceTouched.x - pieceSelected!.x)/2
+            if gameBoard[capture_y][capture_x] != PC.none {
+                movePiece(pieceSelected!, to: pieceTouched)
+                gameBoard[capture_y][capture_x] = PC.none
+                kingMe(newPosition: pieceTouched)
+                let nextJump = jumpsAllowed(pieceTouched)
+                if nextJump.count > 0 {
+                    pieceSelected = pieceTouched
+                }
+            }
+            
+        } else {
+            pieceSelected = aiMove()[0]
+            let aiValidMoves = movesAllowed(pieceSelected!)
+            let pieceTouched = aiValidMoves[0]
+            if gameBoard[pieceTouched.y][pieceTouched.x] == PC.none {
+                movePiece(pieceSelected!, to: pieceTouched)
+                kingMe(newPosition: pieceTouched)
+            }
+        }
+    }
+*/
+
+    override func touchesEnded(touches: NSSet, withEvent event:UIEvent) {
+        let touch: UITouch = touches.anyObject() as UITouch
+        let touchLocation: CGPoint = touch.locationInView(self)
+        
+        let squareWidth =  (self.frame.width / 8)
+        let squareHeight = (self.frame.height / 8)
+        
+        let xCoord: Int = Int(touchLocation.x / squareWidth)
+        let yCoord: Int = Int(touchLocation.y / squareHeight)
+        
+        boardState.pieceWasTouched(Position(y: yCoord, x: xCoord))
+        if boardState.enemyIsAllCaptured() {
+            userMessage.text = "\(boardState.currentTeam.description) wins!"
+        } else {
+            if boardState.currentTeam == Team.black {
+                userMessage.text = "It is black's turn"
+            } else {
+                userMessage.text = "It is red's turn"
+            }
+        }
+        
+        self.setNeedsDisplay()
+    }
+}
+    
+
+
+/*
+ * Display possible moves
+ */
+    
+
+/*
+    func resetGame() {
+        gameBoard = [
+        [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
+        [PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none],
+        [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
+        [PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none],
+        [PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none],
+        [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
+        [PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red],
+        [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
+        ]
+        turnOver = false
+        currentTeam = Team.black
+        pieceSelected = nil
+        moveAlreadyStarted = false
+        userMessage.text = "It is \(currentTeam.description)'s turn"
+        self.setNeedsDisplay()
+    }
+}*/
+
+class BoardState {
+    /*
+    * Game State
+    */
+    
+    
+    let pieceSize: Int = 38
     var turnOver = false
     var moveAlreadyStarted = false
     
     var currentTeam = Team.black
     
-    let board: UIImage = UIImage(named: "board")!
-    let possibleMove: UIImage = UIImage(named: "selectedSquare")!
     let selectedPieceImages = [PC.red: UIImage(named: "selectedRed")!, PC.black: UIImage(named: "selectedBlack")!, PC.redKing: UIImage(named: "selectedRedKing")!, PC.blackKing: UIImage(named: "selectedBlackKing")]
-    let pieceImage = [PC.red: UIImage(named: "red")!, PC.black: UIImage(named: "black")!, PC.redKing: UIImage(named: "redKing")!, PC.blackKing: UIImage(named: "blackKing")]
+    let possibleMove: UIImage = UIImage(named: "selectedSquare")!
     
-
-    enum PC: String {
-        case red = "red", black = "black", none = "none", redKing = "redKing", blackKing = "blackKing"
-        
-        static let allValues = [red, black, redKing, blackKing]
-        
-        var description: String {
-            get {
-                return self.rawValue
-            }
-        }
-    }
     
-    enum Team: String {
-        case red = "red", black = "black"
-        var description: String {
-            get {
-                return self.rawValue
-            }
-        }
-    }
+    var pieceSelected: Position?
     
     let validM = [
         PC.black: [Move(y: 1, x: -1), Move(y: 1, x: 1)],
@@ -72,12 +184,9 @@ class BoardView: UIView {
         PC.blackKing: [Move(y: 2, x: -2), Move( y: 2, x: 2), Move(y: -2, x: -2), Move(y: -2, x: 2)],
         PC.redKing: [Move(y: 2, x: -2), Move( y: 2, x: 2), Move(y: -2, x: -2), Move(y: -2, x: 2)]
     ]
-    
-    /*
-     * Game State
-     */
-    
-    var pieceSelected: Position?
+    init() {
+        
+    }
     
     var gameBoard: [[PC]] = [
         [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
@@ -90,29 +199,6 @@ class BoardView: UIView {
         [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
     ]
     
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        var context: CGContextRef = UIGraphicsGetCurrentContext()
-        var boardSize: CGRect = CGRect(x: 0, y: 0, width: 320, height: 320)
-        board.drawInRect(boardSize)
-        
-        for (var y = 0; y < 8; y++) {
-            for (var x = 0; x < 8; x++) {
-                if gameBoard[y][x] != PC.none {
-                    let piece = pieceImage[gameBoard[y][x]]!!
-                    var pieceDimension: CGRect = CGRect(x: (8 + (x * pieceSize)), y: (8 + (y * pieceSize)), width: pieceSize,height: pieceSize)
-                    piece.drawInRect(pieceDimension)
-                }
-            }
-        }
-        
-        if pieceSelected != nil {
-            showPossibleMoves()
-        }
-        
-        
-    }
     
     func movePiece(from: Position, to: Position) {
         let pieceToMove = gameBoard[pieceSelected!.y][pieceSelected!.x]
@@ -130,8 +216,8 @@ class BoardView: UIView {
     
     func movedPosition(position: Position, move: Move) -> Position {
         // add the move to the position and return it
-        var oldPosition = Position(y: position.y, x: position.x)
-        var newPosition = Position(y: oldPosition.y + move.y, x: oldPosition.x + move.x)
+        let oldPosition = Position(y: position.y, x: position.x)
+        let newPosition = Position(y: oldPosition.y + move.y, x: oldPosition.x + move.x)
         let withinBounds_y1 = (position.y + move.y) >= 0
         let withinBounds_y2 = (position.y + move.y) < 8
         let withinBounds_x1 = (position.x + move.x) >= 0
@@ -159,11 +245,11 @@ class BoardView: UIView {
         println("Possible moves: \(validMoves)")
         return validMoves
     }
- 
+    
     func jumpIsValid(jumpPosition: Position, jump: Move) -> Bool {
         var isValid = false
         //get the position of the obstacle
-        var obstacle_position = movedPosition(jumpPosition, move: Move(y: -jump.y/2, x: -jump.x/2))
+        let obstacle_position = movedPosition(jumpPosition, move: Move(y: -jump.y/2, x: -jump.x/2))
         let obstacle = gameBoard[obstacle_position.y][obstacle_position.x]
         
         //check that the obstacle of the jump is the enemy
@@ -188,16 +274,16 @@ class BoardView: UIView {
         println("Possible jumps: \(validJumps)")
         return validJumps
     }
-
+    
     func kingMe(#newPosition: Position) {
         //King at the last row
         if newPosition.y == 0 && gameBoard[newPosition.y][newPosition.x] == PC.red {
             gameBoard[newPosition.y][newPosition.x] = PC.redKing
-            turnOver = true
+            turnIsOver()
         }
         if newPosition.y == 7 && gameBoard[newPosition.y][newPosition.x] == PC.black {
             gameBoard[newPosition.y][newPosition.x] = PC.blackKing
-            turnOver = true
+            turnIsOver()
         }
     }
     
@@ -234,21 +320,32 @@ class BoardView: UIView {
         
         return allEnemiesCaptured
     }
-
-
-    override func touchesEnded(touches: NSSet, withEvent event:UIEvent) {
-        var touch: UITouch = touches.anyObject() as UITouch
-        var touchLocation: CGPoint = touch.locationInView(self)
-        
-        var squareWidth =  (self.frame.width / 8)
-        var squareHeight = (self.frame.height / 8)
-        
-        var xCoord: Int = Int(touchLocation.x / squareWidth)
-        var yCoord: Int = Int(touchLocation.y / squareHeight)
-        
-        pieceWasTouched(Position(y: yCoord, x: xCoord))
-        
-        self.setNeedsDisplay()
+    
+    func isFriendly(pieceInQuestion: PC) -> Bool {
+        var friendly = false
+        if currentTeam == Team.black && (pieceInQuestion == PC.black || pieceInQuestion == PC.blackKing) {
+            friendly = true
+        } else if currentTeam == Team.red && (pieceInQuestion == PC.red || pieceInQuestion == PC.redKing) {
+            friendly = true
+        }
+        return friendly
+    }
+    
+    func isEnemy(pieceInQuestion: PC) -> Bool {
+        var isAnEnemy = false
+        if currentTeam == Team.black && (pieceInQuestion == PC.red || pieceInQuestion == PC.redKing) {
+            isAnEnemy = true
+        } else if currentTeam == Team.red && (pieceInQuestion == PC.black || pieceInQuestion == PC.blackKing) {
+            isAnEnemy = true
+        }
+        return isAnEnemy
+    }
+    
+    func turnIsOver() -> Bool {
+        if !turnOver {
+            turnOver = true
+        }
+        return turnOver
     }
     
     func pieceWasTouched(pieceTouched: Position) {
@@ -256,7 +353,7 @@ class BoardView: UIView {
         let nextPiece = gameBoard[pieceTouched.y][pieceTouched.x]
         println("it is \(currentTeam.description)'s turn")
         println("touched piece: \(gameBoard[pieceTouched.y][pieceTouched.x].description) -- (y: \(pieceTouched.y), x: \(pieceTouched.x))")
-
+        
         if isFriendly(nextPiece) && !moveAlreadyStarted {
             pieceSelected = pieceTouched
             
@@ -278,7 +375,7 @@ class BoardView: UIView {
                             pieceSelected = pieceTouched
                             moveAlreadyStarted = true
                         } else {
-                            turnOver = true
+                            turnIsOver()
                         }
                     }
                 }
@@ -286,64 +383,38 @@ class BoardView: UIView {
                 for move in validMoves {
                     if pieceTouched == move && gameBoard[pieceTouched.y][pieceTouched.x] == PC.none {
                         movePiece(pieceSelected!, to: pieceTouched)
+                        
                         kingMe(newPosition: pieceTouched)
-                        turnOver = true
+                        turnIsOver()
                     }
                 }
             }
             
             if turnOver {
-                if enemyIsAllCaptured() {
-                    userMessage.text = "\(currentTeam.description) wins!"
-                } else {
                     turnSwitch()
+                    //       aiTurn()
+                    //       turnSwitch()
                     moveAlreadyStarted = false
-                    userMessage.text = "It is \(currentTeam.description)'s turn"
-                }
+                
                 pieceSelected = nil
             }
         }
     }
     
-    func isFriendly(pieceInQuestion: PC) -> Bool {
-        var friendly = false
-        if currentTeam == Team.black && (pieceInQuestion == PC.black || pieceInQuestion == PC.blackKing) {
-            friendly = true
-        } else if currentTeam == Team.red && (pieceInQuestion == PC.red || pieceInQuestion == PC.redKing) {
-            friendly = true
-        }
-        return friendly
-    }
-    
-    func isEnemy(pieceInQuestion: PC) -> Bool {
-        var isAnEnemy = false
-        if currentTeam == Team.black && (pieceInQuestion == PC.red || pieceInQuestion == PC.redKing) {
-            isAnEnemy = true
-        } else if currentTeam == Team.red && (pieceInQuestion == PC.black || pieceInQuestion == PC.blackKing) {
-            isAnEnemy = true
-        }
-        return isAnEnemy
-    }
-
-/*
- * Display possible moves
- */
-    
     func possibleMoveImages(pieceSelected: Position, offset: Move) {
-        var locationOnBoard: CGRect = CGRect(x: (8 + (pieceSize * (self.pieceSelected!.x + offset.x))), y: 8 + (pieceSize * (self.pieceSelected!.y + offset.y)), width: pieceSize, height: pieceSize)
+        let locationOnBoard: CGRect = CGRect(x: (8 + (pieceSize * (self.pieceSelected!.x + offset.x))), y: 8 + (pieceSize * (self.pieceSelected!.y + offset.y)), width: pieceSize, height: pieceSize)
         possibleMove.drawInRect(locationOnBoard)
     }
-
+    
     //assume that the front for black is going towards red; and front for red is going towards black
     //assumes that left and right are relative to the user's view
     func showPossibleMoves() {
         let piece = gameBoard[pieceSelected!.y][pieceSelected!.x]
         if piece != PC.none {
-
-            var sq: CGRect = CGRect(x: (8 + (pieceSize * (self.pieceSelected!.x))), y: 8 + (pieceSize * (self.pieceSelected!.y)), width: pieceSize, height: pieceSize)
+            
+            let sq: CGRect = CGRect(x: (8 + (pieceSize * (self.pieceSelected!.x))), y: 8 + (pieceSize * (self.pieceSelected!.y)), width: pieceSize, height: pieceSize)
             let selectedImage: UIImage = selectedPieceImages[piece]!!
             selectedImage.drawInRect(sq)
-
             
             let validMoves = movesAllowed(pieceSelected!)
             let validJumps = jumpsAllowed(pieceSelected!)
@@ -365,23 +436,45 @@ class BoardView: UIView {
             }
         }
     }
+}
+
+enum PC: String {
+    case red = "red", black = "black", none = "none", redKing = "redKing", blackKing = "blackKing"
     
-    func resetGame() {
-        gameBoard = [
-        [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
-        [PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none],
-        [PC.none, PC.black, PC.none, PC.black, PC.none, PC.black, PC.none, PC.black],
-        [PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none],
-        [PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none, PC.none],
-        [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
-        [PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red],
-        [PC.red, PC.none, PC.red, PC.none, PC.red, PC.none, PC.red, PC.none],
-        ]
-        turnOver = false
-        currentTeam = Team.black
-        pieceSelected = nil
-        moveAlreadyStarted = false
-        userMessage.text = "It is \(currentTeam.description)'s turn"
-        self.setNeedsDisplay()
+    static let allValues = [red, black, redKing, blackKing]
+    
+    var description: String {
+        get {
+            return self.rawValue
+        }
+    }
+}
+
+enum Team: String {
+    case red = "red", black = "black"
+    var description: String {
+        get {
+            return self.rawValue
+        }
+    }
+}
+
+struct Position: Printable, Equatable {
+    let y: Int
+    let x: Int
+    var description: String {
+        return "(\(y), \(x))"
+    }
+}
+
+func ==(lhs: Position, rhs: Position) -> Bool {
+    return lhs.x == rhs.x && lhs.y == rhs.y
+}
+
+struct Move: Printable {
+    let y: Int
+    let x: Int
+    var description: String {
+        return "(\(y), \(x))"
     }
 }
