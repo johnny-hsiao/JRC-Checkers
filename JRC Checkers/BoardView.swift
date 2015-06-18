@@ -99,9 +99,9 @@ class BoardView: UIView {
         }
     }
 */
-
-    override func touchesEnded(touches: NSSet, withEvent event:UIEvent) {
-        let touch: UITouch = touches.anyObject() as UITouch
+    
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        let touch: UITouch = touches.first as! UITouch
         let touchLocation: CGPoint = touch.locationInView(self)
         
         let squareWidth =  (self.frame.width / 8)
