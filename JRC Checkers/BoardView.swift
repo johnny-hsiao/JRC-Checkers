@@ -232,9 +232,12 @@ class BoardView: UIView {
         return allEnemiesCaptured
     }
 
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        <#code#>
+    }
 
     override func touchesEnded(touches: NSSet, withEvent event:UIEvent) {
-        var touch: UITouch = touches.anyObject() as UITouch
+        var touch: UITouch = touches.first as UITouch
         var touchLocation: CGPoint = touch.locationInView(self)
         
         var squareWidth =  (self.frame.width / 8)
