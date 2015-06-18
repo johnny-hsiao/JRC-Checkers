@@ -236,8 +236,8 @@ class BoardView: UIView {
     }
 
 
-    override func touchesEnded(touches: NSSet, withEvent event:UIEvent) {
-        var touch: UITouch = touches.anyObject() as UITouch
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        var touch: UITouch = touches.first as! UITouch
         var touchLocation: CGPoint = touch.locationInView(self)
         
         var squareWidth =  (self.frame.width / 8)
@@ -250,6 +250,7 @@ class BoardView: UIView {
         
         self.setNeedsDisplay()
     }
+    
     
     func pieceWasTouched(pieceTouched: Position) {
         turnOver = false
