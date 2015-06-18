@@ -32,7 +32,11 @@ class BoardView: UIView {
     
     var currentTeam = Team.black
     
-    var possibleMove: UIImage = UIImage(named: "selectedSquare")!
+    let board: UIImage = UIImage(named: "board")!
+    let possibleMove: UIImage = UIImage(named: "selectedSquare")!
+    let selectedPieceImages = [PC.red: UIImage(named: "selectedRed")!, PC.black: UIImage(named: "selectedBlack")!, PC.redKing: UIImage(named: "selectedRedKing")!, PC.blackKing: UIImage(named: "selectedBlackKing")]
+    let pieceImage = [PC.red: UIImage(named: "red")!, PC.black: UIImage(named: "black")!, PC.redKing: UIImage(named: "redKing")!, PC.blackKing: UIImage(named: "blackKing")]
+    
 
     enum PC: String {
         case red = "red", black = "black", none = "none", redKing = "redKing", blackKing = "blackKing"
@@ -89,26 +93,25 @@ class BoardView: UIView {
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
-        
         var context: CGContextRef = UIGraphicsGetCurrentContext()
-        var board: UIImage = UIImage(named: "board")!
         var boardSize: CGRect = CGRect(x: 0, y: 0, width: 320, height: 320)
         board.drawInRect(boardSize)
         
         for (var y = 0; y < 8; y++) {
             for (var x = 0; x < 8; x++) {
-                for color in PC.allValues {
-                    if gameBoard[y][x] == color {
-                        var pieceImage: UIImage = UIImage(named: color.description)!
-                        var pieceDimension: CGRect = CGRect(x: (8 + (x * pieceSize)), y: (8 + (y * pieceSize)), width: pieceSize,height: pieceSize)
-                        pieceImage.drawInRect(pieceDimension)
-                    }
+                if gameBoard[y][x] != PC.none {
+                    let piece = pieceImage[gameBoard[y][x]]!!
+                    var pieceDimension: CGRect = CGRect(x: (8 + (x * pieceSize)), y: (8 + (y * pieceSize)), width: pieceSize,height: pieceSize)
+                    piece.drawInRect(pieceDimension)
                 }
             }
         }
+        
         if pieceSelected != nil {
             showPossibleMoves()
         }
+        
+        
     }
     
     func movePiece(from: Position, to: Position) {
@@ -232,12 +235,9 @@ class BoardView: UIView {
         return allEnemiesCaptured
     }
 
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        <#code#>
-    }
 
-    override func touchesEnded(touches: NSSet, withEvent event:UIEvent) {
-        var touch: UITouch = touches.first as UITouch
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        var touch: UITouch = touches.first as! UITouch
         var touchLocation: CGPoint = touch.locationInView(self)
         
         var squareWidth =  (self.frame.width / 8)
@@ -250,6 +250,7 @@ class BoardView: UIView {
         
         self.setNeedsDisplay()
     }
+    
     
     func pieceWasTouched(pieceTouched: Position) {
         turnOver = false
@@ -339,10 +340,10 @@ class BoardView: UIView {
     func showPossibleMoves() {
         let piece = gameBoard[pieceSelected!.y][pieceSelected!.x]
         if piece != PC.none {
-            var selectedPieceImages = [PC.red: "selectedRed", PC.black: "selectedBlack", PC.redKing: "selectedRedKing", PC.blackKing: "selectedBlackKing"]
-            var selected: UIImage = UIImage(named: selectedPieceImages[piece]!)!
+
             var sq: CGRect = CGRect(x: (8 + (pieceSize * (self.pieceSelected!.x))), y: 8 + (pieceSize * (self.pieceSelected!.y)), width: pieceSize, height: pieceSize)
-            selected.drawInRect(sq)
+            let selectedImage: UIImage = selectedPieceImages[piece]!!
+            selectedImage.drawInRect(sq)
 
             
             let validMoves = movesAllowed(pieceSelected!)
