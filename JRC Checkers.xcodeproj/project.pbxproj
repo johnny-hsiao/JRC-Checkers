@@ -14,7 +14,10 @@
 		DA1CC1311A8D958600B449AA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA1CC12F1A8D958600B449AA /* LaunchScreen.xib */; };
 		DA1CC13D1A8D958600B449AA /* JRC_CheckersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1CC13C1A8D958600B449AA /* JRC_CheckersTests.swift */; };
 		DA1CC1471A8D976B00B449AA /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1CC1461A8D976B00B449AA /* BoardView.swift */; };
-		DADE5AE91AAC182A0039A3AB /* pieceMoveSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = DADE5AE81AAC182A0039A3AB /* pieceMoveSound.wav */; };
+		DA4B98E21AB2C0EF0027637D /* BoardView MAR12 in Resources */ = {isa = PBXBuildFile; fileRef = DA4B98E11AB2C0EF0027637D /* BoardView MAR12 */; };
+		DA4B98E41AB2C11B0027637D /* BoardView (before change) MAR12 in Resources */ = {isa = PBXBuildFile; fileRef = DA4B98E31AB2C11B0027637D /* BoardView (before change) MAR12 */; };
+		DA4B98E61AB46BC50027637D /* BoardViewMAR14 in Resources */ = {isa = PBXBuildFile; fileRef = DA4B98E51AB46BC50027637D /* BoardViewMAR14 */; };
+		DA84BD761AD21DFA005CBF54 /* pieceMoveSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = DA84BD751AD21DFA005CBF54 /* pieceMoveSound.wav */; };
 		DAE6F6C51AA4172800ABEB64 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = DAE6F6C41AA4172800ABEB64 /* .gitignore */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +43,10 @@
 		DA1CC13B1A8D958600B449AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA1CC13C1A8D958600B449AA /* JRC_CheckersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JRC_CheckersTests.swift; sourceTree = "<group>"; };
 		DA1CC1461A8D976B00B449AA /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
-		DADE5AE81AAC182A0039A3AB /* pieceMoveSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = pieceMoveSound.wav; path = ../../../../pieceMoveSound.wav; sourceTree = "<group>"; };
+		DA4B98E11AB2C0EF0027637D /* BoardView MAR12 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BoardView MAR12"; sourceTree = "<group>"; };
+		DA4B98E31AB2C11B0027637D /* BoardView (before change) MAR12 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BoardView (before change) MAR12"; sourceTree = "<group>"; };
+		DA4B98E51AB46BC50027637D /* BoardViewMAR14 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BoardViewMAR14; sourceTree = "<group>"; };
+		DA84BD751AD21DFA005CBF54 /* pieceMoveSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pieceMoveSound.wav; sourceTree = "<group>"; };
 		DAE6F6C41AA4172800ABEB64 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -86,6 +92,9 @@
 				DA1CC1261A8D958600B449AA /* AppDelegate.swift */,
 				DA1CC1281A8D958600B449AA /* ViewController.swift */,
 				DA1CC1461A8D976B00B449AA /* BoardView.swift */,
+				DA4B98E51AB46BC50027637D /* BoardViewMAR14 */,
+				DA4B98E31AB2C11B0027637D /* BoardView (before change) MAR12 */,
+				DA4B98E11AB2C0EF0027637D /* BoardView MAR12 */,
 				DAE6F6C41AA4172800ABEB64 /* .gitignore */,
 				DA1CC12A1A8D958600B449AA /* Main.storyboard */,
 				DA1CC12D1A8D958600B449AA /* Images.xcassets */,
@@ -98,7 +107,7 @@
 		DA1CC1241A8D958600B449AA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				DADE5AE81AAC182A0039A3AB /* pieceMoveSound.wav */,
+				DA84BD751AD21DFA005CBF54 /* pieceMoveSound.wav */,
 				DA1CC1251A8D958600B449AA /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -204,8 +213,11 @@
 				DAE6F6C51AA4172800ABEB64 /* .gitignore in Resources */,
 				DA1CC12C1A8D958600B449AA /* Main.storyboard in Resources */,
 				DA1CC1311A8D958600B449AA /* LaunchScreen.xib in Resources */,
+				DA4B98E21AB2C0EF0027637D /* BoardView MAR12 in Resources */,
+				DA84BD761AD21DFA005CBF54 /* pieceMoveSound.wav in Resources */,
 				DA1CC12E1A8D958600B449AA /* Images.xcassets in Resources */,
-				DADE5AE91AAC182A0039A3AB /* pieceMoveSound.wav in Resources */,
+				DA4B98E41AB2C11B0027637D /* BoardView (before change) MAR12 in Resources */,
+				DA4B98E61AB46BC50027637D /* BoardViewMAR14 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

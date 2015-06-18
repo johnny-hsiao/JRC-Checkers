@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVFoundation
 
 class ViewController: UIViewController {
 
@@ -21,15 +20,14 @@ class ViewController: UIViewController {
     
     @IBOutlet var popupNo: UIButton!
     
-    var audioPlayer = AVAudioPlayer()
-    
+    @IBOutlet var undoMoveButton: UIButton!
     
     @IBAction func resetButtonClicked(sender: UIButton) {
         showUserMsgNButtons()
     }
     
     @IBAction func yesClicked(sender: UIButton) {
- //       board.resetGame()
+        board.resetGame()
         hideUserMsgNButtons()
         
     }
@@ -49,32 +47,23 @@ class ViewController: UIViewController {
         popupYes.hidden = true
         popupNo.hidden = true
     }
+    
+    @IBAction func undoMove(sender: UIButton) {
+        board.undoMove()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        var alertSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("pieceMoveSound", ofType: "wav")!)
-        println(alertSound)
+
         
-        // Removed deprecated use of AVAudioSessionDelegate protocol
-        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, error: nil)
-        AVAudioSession.sharedInstance().setActive(true, error: nil)
         
-        var error:NSError?
-        audioPlayer = AVAudioPlayer(contentsOfURL: alertSound, error: &error)
-        audioPlayer.prepareToPlay()
-        audioPlayer.play()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-   
-    
-
-        
-    
 
 }
 

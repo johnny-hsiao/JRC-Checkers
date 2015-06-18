@@ -115,6 +115,16 @@
                                 <color key="textColor" red="0.69104646381578949" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Zat-GT-VEk">
+                                <rect key="frame" x="225" y="87" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Undo">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="undoMove:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="0oL-Xb-lwJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -124,6 +134,7 @@
                         <outlet property="popupNo" destination="Aqs-PN-jwC" id="97k-HQ-GQ9"/>
                         <outlet property="popupYes" destination="9JZ-h8-Ipr" id="Ce1-1U-bcX"/>
                         <outlet property="resetButton" destination="Hxe-wT-glT" id="8O5-Lr-Tco"/>
+                        <outlet property="undoMoveButton" destination="Zat-GT-VEk" id="PSX-iT-SZd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
