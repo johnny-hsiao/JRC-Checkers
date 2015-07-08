@@ -1,5 +1,5 @@
 import UIKit
-
+import AVFoundation
 
 struct Position: Printable, Equatable {
     let y: Int
@@ -25,10 +25,12 @@ class BoardView: UIView {
     
     @IBOutlet var userMessage: UILabel!
     
-    let pieceSize: Int = 38
-
+    var pieceSize: Double = 38
+    var boarderWidth: Double = 8
+    
     var turnOver = false
     var moveAlreadyStarted = false
+    var audioPlayer = AVAudioPlayer()
     
     var currentTeam = Team.black
     
@@ -93,15 +95,21 @@ class BoardView: UIView {
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
+        
         var context: CGContextRef = UIGraphicsGetCurrentContext()
-        var boardSize: CGRect = CGRect(x: 0, y: 0, width: 320, height: 320)
+        let screenWidth: CGFloat = UIScreen.mainScreen().bounds.size.width
+        let aspectRatio = screenWidth/320
+        let adjustedPieceSize = pieceSize * Double(aspectRatio)
+        let adjustedBoarderWidth = boarderWidth * Double(aspectRatio)
+        
+        var boardSize: CGRect = CGRect(x: 0, y: 0, width: 320*aspectRatio, height: 321*aspectRatio)
         board.drawInRect(boardSize)
         
         for (var y = 0; y < 8; y++) {
             for (var x = 0; x < 8; x++) {
                 if gameBoard[y][x] != PC.none {
                     let piece = pieceImage[gameBoard[y][x]]!!
-                    var pieceDimension: CGRect = CGRect(x: (8 + (x * pieceSize)), y: (8 + (y * pieceSize)), width: pieceSize,height: pieceSize)
+                    var pieceDimension: CGRect = CGRect(x: (adjustedBoarderWidth + (Double(x) * adjustedPieceSize)), y: (adjustedBoarderWidth + (Double(y) * adjustedPieceSize)), width: adjustedPieceSize,height: adjustedPieceSize)
                     piece.drawInRect(pieceDimension)
                 }
             }
@@ -118,6 +126,7 @@ class BoardView: UIView {
         let pieceToMove = gameBoard[pieceSelected!.y][pieceSelected!.x]
         gameBoard[from.y][from.x] = PC.none
         gameBoard[to.y][to.x] = pieceToMove
+        playSound()
     }
     
     func turnSwitch() {
@@ -235,8 +244,7 @@ class BoardView: UIView {
         return allEnemiesCaptured
     }
 
-
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         var touch: UITouch = touches.first as! UITouch
         var touchLocation: CGPoint = touch.locationInView(self)
         
@@ -250,7 +258,6 @@ class BoardView: UIView {
         
         self.setNeedsDisplay()
     }
-    
     
     func pieceWasTouched(pieceTouched: Position) {
         turnOver = false
@@ -331,17 +338,28 @@ class BoardView: UIView {
  */
     
     func possibleMoveImages(pieceSelected: Position, offset: Move) {
-        var locationOnBoard: CGRect = CGRect(x: (8 + (pieceSize * (self.pieceSelected!.x + offset.x))), y: 8 + (pieceSize * (self.pieceSelected!.y + offset.y)), width: pieceSize, height: pieceSize)
+        let screenWidth: CGFloat = UIScreen.mainScreen().bounds.size.width
+        let aspectRatio = screenWidth/320
+        let adjustPieceSize = pieceSize * Double(aspectRatio)
+        let adjustedBoarderWidth = boarderWidth * Double(aspectRatio)
+        
+        var locationOnBoard: CGRect = CGRect(x: (adjustedBoarderWidth + (adjustPieceSize * Double(self.pieceSelected!.x + offset.x))), y: adjustedBoarderWidth + (adjustPieceSize * Double(self.pieceSelected!.y + offset.y)), width: adjustPieceSize, height: adjustPieceSize)
         possibleMove.drawInRect(locationOnBoard)
     }
 
     //assume that the front for black is going towards red; and front for red is going towards black
     //assumes that left and right are relative to the user's view
     func showPossibleMoves() {
+        let screenWidth: CGFloat = UIScreen.mainScreen().bounds.size.width
+        let aspectRatio = screenWidth/320
+        let adjustedPieceSize = pieceSize * Double(aspectRatio)
+        let adjustedBoarderWidth = boarderWidth * Double(aspectRatio)
+        
         let piece = gameBoard[pieceSelected!.y][pieceSelected!.x]
         if piece != PC.none {
 
-            var sq: CGRect = CGRect(x: (8 + (pieceSize * (self.pieceSelected!.x))), y: 8 + (pieceSize * (self.pieceSelected!.y)), width: pieceSize, height: pieceSize)
+            
+            var sq: CGRect = CGRect(x: (adjustedBoarderWidth + (adjustedPieceSize * Double(self.pieceSelected!.x))), y: adjustedBoarderWidth + (adjustedPieceSize * Double(self.pieceSelected!.y)), width: adjustedPieceSize, height: adjustedPieceSize)
             let selectedImage: UIImage = selectedPieceImages[piece]!!
             selectedImage.drawInRect(sq)
 
@@ -365,6 +383,15 @@ class BoardView: UIView {
                 }
             }
         }
+    }
+    
+    func playSound() {
+        var alertSound: NSURL = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("pieceMoved", ofType: "wav")!)!
+        var error:NSError?
+        audioPlayer = AVAudioPlayer(contentsOfURL: alertSound, error: &error)
+        audioPlayer.prepareToPlay()
+        
+        audioPlayer.play()
     }
     
     func resetGame() {
